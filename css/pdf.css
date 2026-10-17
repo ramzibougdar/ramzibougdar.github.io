@@ -70,6 +70,7 @@ html.pdf .lang-switch,
 html.pdf .footer__links,
 html.pdf .back-to-top,
 html.pdf .modal,
+html.pdf .consent,
 html.pdf .error {
   display: none !important;
 }

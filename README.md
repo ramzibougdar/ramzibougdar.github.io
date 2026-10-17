@@ -22,7 +22,26 @@ Il s'ouvre directement depuis le fichier `index.html`, sans serveur.
 
 - [GSAP 3.13.0](https://gsap.com) (core, ScrollTrigger) depuis cdnjs, version figée et
   empreintes SRI : animations uniquement ;
-- Google Fonts : Unbounded (titres) et Manrope (texte), avec polices système de repli.
+- Google Fonts : Unbounded (titres) et Manrope (texte), avec polices système de repli ;
+- Google Tag Manager (`GTM-W86L38PQ`), qui charge Google Analytics, sous **Google Consent Mode v2**
+  (voir « Cookies et consentement » ci-dessous).
+
+### Cookies et consentement
+
+- Le script en ligne du `<head>` des trois pages HTML (avant GTM) refuse tout par défaut
+  (`analytics_storage`, `ad_storage`, `ad_user_data`, `ad_personalization`) et applique aussitôt
+  le choix déjà mémorisé. À garder **avant** le bloc Google Tag Manager, et hors du bloc généré
+  par `scripts/generate-metadata.js` (qui le réécrit).
+- `js/consent.js` affiche la bannière (`#consent`, textes dans `en/index.html` et `fr/index.html`)
+  tant qu'aucun choix n'est mémorisé, puis envoie `gtag('consent', 'update', …)` et l'événement
+  `consent_update` au `dataLayer`. « Tout refuser » et « Tout accepter » ont le même poids
+  (recommandations de la CNIL) ; le choix dure 6 mois (`localStorage`, clé `consent`), puis il est
+  redemandé. Le bouton « Cookies » du pied de page rouvre la bannière ; retirer son accord efface
+  les cookies `_ga`.
+- Côté GTM : la balise Google (GA4) respecte nativement `analytics_storage` (mode avancé :
+  pings sans cookie tant que le visiteur n'a pas accepté). Pour le mode de base, ajoutez à la
+  balise l'autorisation supplémentaire `analytics_storage` ou un déclencheur sur l'événement
+  personnalisé `consent_update`.
 
 ## Structure
 
@@ -37,6 +56,7 @@ js/i18n.js               Langue de la page, textes d'interface générés en JS,
 js/calc.js               Calculs dérivés (chiffres clés, durées, timeline)
 js/icons.js              Tracés SVG des logos de technologies (Simple Icons, CC0), rendus en ligne
 js/main.js               Rendu du CV, thème, navigation, marqueurs, bouton PDF (fonctionne seul)
+js/consent.js            Bannière cookies (Google Consent Mode v2) : choix du visiteur, envoyé à Google Tag Manager
 js/animations.js         Seul module d'animation (GSAP) ; inerte sans GSAP ou en mouvement réduit
 data/cv.js             ← le contenu du CV, en anglais et en français (seul fichier à modifier au quotidien)
 data/private.js        Téléphone de secours pour le PDF, LOCAL (ignoré par git) — facultatif si `contact.phone` est renseigné

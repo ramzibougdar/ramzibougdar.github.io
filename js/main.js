@@ -30,6 +30,13 @@ var PDF_MODE = /[?&]pdf\b/.test(window.location.search);
     CV into the HTML source, so robots that do not run JavaScript read the whole CV. */
 var PRERENDER_MODE = /[?&]prerender\b/.test(window.location.search);
 
+// PDF mode: the downloadable PDF keeps the site's identity (css/pdf.css), so the sober
+// print sheet used by a visitor's Ctrl+P is turned off.
+if (PDF_MODE) {
+  document.documentElement.classList.add('pdf');
+  document.querySelectorAll('link[rel="stylesheet"][href$="print.css"]').forEach(function (l) { l.media = 'not all'; });
+}
+
 /** Number of missions shown before a timeline card is collapsed. */
 var VISIBLE_MISSIONS = 4;
 
@@ -43,7 +50,7 @@ var SVG_CHEVRON = '<svg aria-hidden="true" focusable="false" width="18" height="
     Keyed by the displayed name, in both languages for translated names. */
 var LOGOS = {
   'AI agents': 'agents', 'Agents IA': 'agents', 'Automation': 'automation', 'Automatisation': 'automation', 'Claude': 'claude', 'PrestaShop': 'prestashop', 'Shopify': 'shopify',
-  'Python': 'python', 'FastAPI': 'fastapi', 'Node.js': 'nodedotjs', 'Symfony': 'symfony', 'Laravel': 'laravel',
+  'PHP': 'php', 'MySQL': 'mysql', 'Python': 'python', 'FastAPI': 'fastapi', 'Node.js': 'nodedotjs', 'Symfony': 'symfony', 'Laravel': 'laravel',
   'TypeScript': 'typescript', 'JavaScript': 'javascript', 'React': 'react', 'Next.js': 'nextdotjs',
   'HTML5': 'html5', 'CSS / Sass': 'sass', 'Docker': 'docker', 'Git': 'git', 'Webpack': 'webpack'
 };
@@ -364,9 +371,12 @@ function renderLanguages(languages) {
 function renderPosition(position) {
   var type = window.CV_CALC.TYPE_LABELS[position.type];
   var meta = create('p', { className: 'position__meta' }, period(position.start, position.end));
+  // Assignment carried out on behalf of an employer (e.g. a consultancy placement)
+  var via = position.via ? create('p', { className: 'position__via' }, T.missionFor + position.via) : null;
   if (position.location) append(meta, [create('span', { 'aria-hidden': 'true' }, ' / '), text(position.location, 'location')]);
   var block = create('div', { className: 'position' }, [
     create('h4', null, [position.title, position.type === 'internship' && type ? create('span', { className: 'badge badge--' + position.type }, type) : null]),
+    via,
     meta
   ]);
   if (position.description) block.appendChild(create('p', { className: 'position__desc' }, text(position.description, 'description')));

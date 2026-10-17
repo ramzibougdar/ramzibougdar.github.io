@@ -2,7 +2,7 @@
 
 > Développeur d'applications IA | Expert e-commerce PrestaShop & Shopify | Full Stack
 
-Développeur full stack, je conçois depuis 2026 des applications avec l'IA : agents, automatisation, génération de contenu, analyse de documents, outils internes et IA intégrée aux boutiques e-commerce, avec Claude.
+Développeur full stack, je conçois des applications avec l'IA : agents, automatisation, génération de contenu, analyse de documents, outils internes et IA intégrée aux boutiques e-commerce, avec Claude.
 
 Je m'appuie sur une solide expertise e-commerce B2C et B2B sur PrestaShop et Shopify : modules sur mesure, intégrations et connexions aux APIs, webservices, flux de données et logistiques. Au-delà du code, je pilote les projets de bout en bout (analyse et estimation, spécifications technico-fonctionnelles, gestion de projet MOE / AMOA, déploiement) et j'encadre les équipes techniques.
 
@@ -12,25 +12,17 @@ Je m'appuie sur une solide expertise e-commerce B2C et B2B sur PrestaShop et Sho
 **Expérience professionnelle**
 
 - Datalinx — Développeur Full Stack, février 2023 – aujourd'hui
-  - Développement d'applications avec l'IA depuis 2026 : agents, automatisation, génération de contenu, analyse de documents, outils internes
+  - Développement d'applications avec l'IA : agents, automatisation, génération de contenu, analyse de documents, outils internes
   - Intégration de l'IA dans des boutiques e-commerce
   - Conception et développement de solutions e-commerce B2C et B2B sous PrestaShop et Shopify
-  - Analyse et estimation des projets
-  - Coordination du travail des différentes équipes techniques
-  - Suivi de l'avancement des projets
-  - Validation des livrables
-  - Coordination et gestion du déploiement des projets
-  - Gestion de projet MOE / AMOA
-  - Encadrement et management technique
   - Rédaction des spécifications d'architectures technico-fonctionnelles détaillées des projets
-  - Développement et maintenance de sites e-commerce
-  - Développement front-end et back-end
+  - Gestion de projet MOE / AMOA : analyse et estimation, suivi de l'avancement, validation des livrables, déploiement
+  - Coordination des équipes techniques, encadrement et management technique
+  - Développement front-end et back-end, maintenance de sites e-commerce
 - TIMKOD — Développeur Senior Fullstack, avril 2020 – décembre 2022
-  - Participation à l'analyse des spécifications fonctionnelles et techniques
-  - Participation à la définition de l'architecture et aux choix des technologies
+  - Analyse des spécifications fonctionnelles et techniques, définition de l'architecture et choix des technologies
   - Découpage des tâches, estimation et planification dans un contexte agile
-  - Gestion de projet MOE / AMOA
-  - Encadrement et management technique
+  - Gestion de projet MOE / AMOA, encadrement et management technique
   - Revue de code
   - Conception et développement de modules PrestaShop
   - Intervention sur les développements spécifiques les plus complexes
@@ -52,8 +44,8 @@ Je m'appuie sur une solide expertise e-commerce B2C et B2B sur PrestaShop et Sho
 
 **Missions chez des clients**
 
-- Parrot — Expert E-commerce, février 2020 – avril 2020 : Accompagnement architecture dans le cadre d'une refonte de la boutique en ligne.
-- Kisio Digital — Expert E-commerce, mars 2019 – juin 2019 : Conception et développement d'API PrestaShop / applications tierces pour les transports urbains.
+- Parrot — Expert E-commerce (mission pour EVOLUTIVE GROUP), février 2020 – avril 2020 : Accompagnement architecture dans le cadre d'une refonte de la boutique en ligne.
+- Kisio Digital — Expert E-commerce (mission pour EVOLUTIVE GROUP), mars 2019 – juin 2019 : Conception et développement d'API PrestaShop / applications tierces pour les transports urbains.
 
 **Formation**
 
@@ -64,7 +56,7 @@ Je m'appuie sur une solide expertise e-commerce B2C et B2B sur PrestaShop et Sho
 
 - IA : Agents IA, Automatisation, Claude
 - E-commerce : PrestaShop, Shopify, B2C, B2B
-- Back-end : Python, FastAPI, Node.js, Symfony, Laravel
+- Back-end : PHP, Symfony, Laravel, Python, FastAPI, Node.js, MySQL
 - Front-end : TypeScript, JavaScript, React, Next.js, HTML5, CSS / Sass
 - Outils : Docker, Git, Webpack
 

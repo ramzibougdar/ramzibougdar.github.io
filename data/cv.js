@@ -21,8 +21,8 @@ window.CV_DATA = {
     "location": "Antibes, Provence-Alpes-Côte d'Azur, France",
     "summary": [
       {
-        "en": "A full stack developer, since 2026 I have been building applications with AI: agents, automation, content generation, document analysis, internal tools and AI integrated into e-commerce stores, with Claude.",
-        "fr": "Développeur full stack, je conçois depuis 2026 des applications avec l'IA : agents, automatisation, génération de contenu, analyse de documents, outils internes et IA intégrée aux boutiques e-commerce, avec Claude."
+        "en": "A full stack developer, I build applications with AI: agents, automation, content generation, document analysis, internal tools and AI integrated into e-commerce stores, with Claude.",
+        "fr": "Développeur full stack, je conçois des applications avec l'IA : agents, automatisation, génération de contenu, analyse de documents, outils internes et IA intégrée aux boutiques e-commerce, avec Claude."
       },
       {
         "en": "I build on solid B2C and B2B e-commerce expertise with PrestaShop and Shopify: custom modules, integrations and connections to APIs, web services, data and logistics flows. Beyond code, I lead projects from end to end (analysis and estimation, technical and functional specifications, project management (delivery and client side), deployment) and I manage technical teams.",
@@ -80,19 +80,13 @@ window.CV_DATA = {
           "start": "2023-02",
           "end": null,
           "missions": [
-            { "en": "Building applications with AI since 2026: agents, automation, content generation, document analysis, internal tools", "fr": "Développement d'applications avec l'IA depuis 2026 : agents, automatisation, génération de contenu, analyse de documents, outils internes" },
+            { "en": "Building applications with AI: agents, automation, content generation, document analysis, internal tools", "fr": "Développement d'applications avec l'IA : agents, automatisation, génération de contenu, analyse de documents, outils internes" },
             { "en": "Integration of AI into e-commerce stores", "fr": "Intégration de l'IA dans des boutiques e-commerce" },
             { "en": "Design and development of B2C and B2B e-commerce solutions with PrestaShop and Shopify", "fr": "Conception et développement de solutions e-commerce B2C et B2B sous PrestaShop et Shopify" },
-            { "en": "Project analysis and estimation", "fr": "Analyse et estimation des projets" },
-            { "en": "Coordination of the work of the various technical teams", "fr": "Coordination du travail des différentes équipes techniques" },
-            { "en": "Project progress monitoring", "fr": "Suivi de l'avancement des projets" },
-            { "en": "Validation of deliverables", "fr": "Validation des livrables" },
-            { "en": "Coordination and management of project deployment", "fr": "Coordination et gestion du déploiement des projets" },
-            { "en": "Project management (delivery and client side)", "fr": "Gestion de projet MOE / AMOA" },
-            { "en": "Technical leadership and management", "fr": "Encadrement et management technique" },
             { "en": "Writing detailed technical and functional architecture specifications for projects", "fr": "Rédaction des spécifications d'architectures technico-fonctionnelles détaillées des projets" },
-            { "en": "Development and maintenance of e-commerce websites", "fr": "Développement et maintenance de sites e-commerce" },
-            { "en": "Front-end and back-end development", "fr": "Développement front-end et back-end" }
+            { "en": "Project management (delivery and client side): analysis and estimation, progress monitoring, validation of deliverables, deployment", "fr": "Gestion de projet MOE / AMOA : analyse et estimation, suivi de l'avancement, validation des livrables, déploiement" },
+            { "en": "Coordination of the technical teams, technical leadership and management", "fr": "Coordination des équipes techniques, encadrement et management technique" },
+            { "en": "Front-end and back-end development and maintenance of e-commerce websites", "fr": "Développement front-end et back-end, maintenance de sites e-commerce" }
           ]
         }
       ]
@@ -106,11 +100,9 @@ window.CV_DATA = {
           "start": "2020-04",
           "end": "2022-12",
           "missions": [
-            { "en": "Contribution to the analysis of functional and technical specifications", "fr": "Participation à l'analyse des spécifications fonctionnelles et techniques" },
-            { "en": "Contribution to defining the architecture and choosing the technologies", "fr": "Participation à la définition de l'architecture et aux choix des technologies" },
+            { "en": "Analysis of functional and technical specifications, definition of the architecture and choice of technologies", "fr": "Analyse des spécifications fonctionnelles et techniques, définition de l'architecture et choix des technologies" },
             { "en": "Task breakdown, estimation and planning in an agile context", "fr": "Découpage des tâches, estimation et planification dans un contexte agile" },
-            { "en": "Project management (delivery and client side)", "fr": "Gestion de projet MOE / AMOA" },
-            { "en": "Technical leadership and management", "fr": "Encadrement et management technique" },
+            { "en": "Project management (delivery and client side), technical leadership and management", "fr": "Gestion de projet MOE / AMOA, encadrement et management technique" },
             { "en": "Code review", "fr": "Revue de code" },
             { "en": "Design and development of PrestaShop modules", "fr": "Conception et développement de modules PrestaShop" },
             { "en": "Handling the most complex custom developments", "fr": "Intervention sur les développements spécifiques les plus complexes" },
@@ -125,6 +117,7 @@ window.CV_DATA = {
         {
           "title": { "en": "E-commerce Expert", "fr": "Expert E-commerce" },
           "type": "mission",
+          "via": "EVOLUTIVE GROUP",
           "start": "2020-02",
           "end": "2020-04",
           "description": { "en": "Architecture support for the redesign of the online store.", "fr": "Accompagnement architecture dans le cadre d'une refonte de la boutique en ligne." },
@@ -138,6 +131,7 @@ window.CV_DATA = {
         {
           "title": { "en": "E-commerce Expert", "fr": "Expert E-commerce" },
           "type": "mission",
+          "via": "EVOLUTIVE GROUP",
           "start": "2019-03",
           "end": "2019-06",
           "description": { "en": "Design and development of PrestaShop / third-party application APIs for urban transport.", "fr": "Conception et développement d'API PrestaShop / applications tierces pour les transports urbains." },
@@ -217,7 +211,7 @@ window.CV_DATA = {
   "skills": [
     { "category": { "en": "AI", "fr": "IA" }, "items": [{ "en": "AI agents", "fr": "Agents IA" }, { "en": "Automation", "fr": "Automatisation" }, "Claude"] },
     { "category": "E-commerce", "items": ["PrestaShop", "Shopify", "B2C", "B2B"] },
-    { "category": "Back-end", "items": ["Python", "FastAPI", "Node.js", "Symfony", "Laravel"] },
+    { "category": "Back-end", "items": ["PHP", "Symfony", "Laravel", "Python", "FastAPI", "Node.js", "MySQL"] },
     { "category": "Front-end", "items": ["TypeScript", "JavaScript", "React", "Next.js", "HTML5", "CSS / Sass"] },
     { "category": { "en": "Tools", "fr": "Outils" }, "items": ["Docker", "Git", "Webpack"] }
   ],

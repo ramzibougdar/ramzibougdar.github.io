@@ -2,7 +2,7 @@
 
 > AI Application Developer | PrestaShop & Shopify E-commerce Expert | Full Stack
 
-A full stack developer, since 2026 I have been building applications with AI: agents, automation, content generation, document analysis, internal tools and AI integrated into e-commerce stores, with Claude.
+A full stack developer, I build applications with AI: agents, automation, content generation, document analysis, internal tools and AI integrated into e-commerce stores, with Claude.
 
 I build on solid B2C and B2B e-commerce expertise with PrestaShop and Shopify: custom modules, integrations and connections to APIs, web services, data and logistics flows. Beyond code, I lead projects from end to end (analysis and estimation, technical and functional specifications, project management (delivery and client side), deployment) and I manage technical teams.
 
@@ -12,25 +12,17 @@ I build on solid B2C and B2B e-commerce expertise with PrestaShop and Shopify: c
 **Professional experience**
 
 - Datalinx — Full Stack Developer, February 2023 – present
-  - Building applications with AI since 2026: agents, automation, content generation, document analysis, internal tools
+  - Building applications with AI: agents, automation, content generation, document analysis, internal tools
   - Integration of AI into e-commerce stores
   - Design and development of B2C and B2B e-commerce solutions with PrestaShop and Shopify
-  - Project analysis and estimation
-  - Coordination of the work of the various technical teams
-  - Project progress monitoring
-  - Validation of deliverables
-  - Coordination and management of project deployment
-  - Project management (delivery and client side)
-  - Technical leadership and management
   - Writing detailed technical and functional architecture specifications for projects
-  - Development and maintenance of e-commerce websites
-  - Front-end and back-end development
+  - Project management (delivery and client side): analysis and estimation, progress monitoring, validation of deliverables, deployment
+  - Coordination of the technical teams, technical leadership and management
+  - Front-end and back-end development and maintenance of e-commerce websites
 - TIMKOD — Senior Fullstack Developer, April 2020 – December 2022
-  - Contribution to the analysis of functional and technical specifications
-  - Contribution to defining the architecture and choosing the technologies
+  - Analysis of functional and technical specifications, definition of the architecture and choice of technologies
   - Task breakdown, estimation and planning in an agile context
-  - Project management (delivery and client side)
-  - Technical leadership and management
+  - Project management (delivery and client side), technical leadership and management
   - Code review
   - Design and development of PrestaShop modules
   - Handling the most complex custom developments
@@ -52,8 +44,8 @@ I build on solid B2C and B2B e-commerce expertise with PrestaShop and Shopify: c
 
 **Client assignments**
 
-- Parrot — E-commerce Expert, February 2020 – April 2020: Architecture support for the redesign of the online store.
-- Kisio Digital — E-commerce Expert, March 2019 – June 2019: Design and development of PrestaShop / third-party application APIs for urban transport.
+- Parrot — E-commerce Expert (assignment for EVOLUTIVE GROUP), February 2020 – April 2020: Architecture support for the redesign of the online store.
+- Kisio Digital — E-commerce Expert (assignment for EVOLUTIVE GROUP), March 2019 – June 2019: Design and development of PrestaShop / third-party application APIs for urban transport.
 
 **Education**
 
@@ -64,7 +56,7 @@ I build on solid B2C and B2B e-commerce expertise with PrestaShop and Shopify: c
 
 - AI: AI agents, Automation, Claude
 - E-commerce: PrestaShop, Shopify, B2C, B2B
-- Back-end: Python, FastAPI, Node.js, Symfony, Laravel
+- Back-end: PHP, Symfony, Laravel, Python, FastAPI, Node.js, MySQL
 - Front-end: TypeScript, JavaScript, React, Next.js, HTML5, CSS / Sass
 - Tools: Docker, Git, Webpack
 

@@ -44,7 +44,7 @@ var LABELS = {
     locale: 'en-GB', ogLocale: 'en_GB', present: 'present', colon: ': ',
     location: 'Location', current: 'Current position', since: 'since', at: 'at',
     experience: 'Professional experience', assignments: 'Client assignments', education: 'Education',
-    skills: 'Skills', languages: 'Languages', internship: 'internship', highlights: 'Key results',
+    skills: 'Skills', languages: 'Languages', internship: 'internship', missionFor: 'assignment for ', highlights: 'Key results',
     pages: 'CV', page: 'Online CV (English)', otherPage: 'Online CV in French', pdf: 'PDF CV (English)',
     profiles: 'Profiles', otherLlms: 'llms.txt in French',
     contact: 'To contact Ramzi Bougdar, use the Contact section of the online CV.'
@@ -53,7 +53,7 @@ var LABELS = {
     locale: 'fr-FR', ogLocale: 'fr_FR', present: 'aujourd\'hui', colon: ' : ',
     location: 'Localisation', current: 'Poste actuel', since: 'depuis', at: 'chez',
     experience: 'Expérience professionnelle', assignments: 'Missions chez des clients', education: 'Formation',
-    skills: 'Compétences', languages: 'Langues', internship: 'stage', highlights: 'Résultats clés',
+    skills: 'Compétences', languages: 'Langues', internship: 'stage', missionFor: 'mission pour ', highlights: 'Résultats clés',
     pages: 'CV', page: 'CV en ligne (français)', otherPage: 'CV en ligne en anglais', pdf: 'CV en PDF (français)',
     profiles: 'Profils', otherLlms: 'llms.txt en anglais',
     contact: 'Pour contacter Ramzi Bougdar, utilisez la section Contact du CV en ligne.'
@@ -405,6 +405,7 @@ function llmsTxt(data, lang) {
   (cv.experiences || []).forEach(function (e) {
     (e.positions || []).forEach(function (p) {
       var line = '- ' + e.employer + ' — ' + p.title + (p.type === 'internship' ? ' (' + L.internship + ')' : '') +
+        (typeof p.via === 'string' ? ' (' + L.missionFor + p.via + ')' : '') +
         ', ' + date(p.start) + ' – ' + date(p.end) + (typeof p.description === 'string' ? L.colon + p.description : '');
       var details = strings(p.highlights).map(function (h) { return '  - ' + L.highlights + L.colon + h; })
         .concat(strings(p.missions).map(function (m) { return '  - ' + m; }));

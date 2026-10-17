@@ -1,0 +1,102 @@
+/* ==========================================================================
+   pdf.css — downloadable PDF in the site's visual identity
+   Applies only when printing in ?pdf mode (main.js adds the "pdf" class on <html> and turns
+   print.css off). A visitor's own Ctrl+P keeps the sober black-on-white print.css.
+   Same fonts, colours, tiles and timeline as the screen; interface elements are hidden.
+   ========================================================================== */
+
+/* --------------------------------------------------------------------------
+   1. Page: A4, no margin, the site background printed edge to edge
+   -------------------------------------------------------------------------- */
+@page cv {
+  size: A4;
+  margin: 9mm 0;
+  background: var(--c-bg);   /* margins in the site background too, on every page */
+}
+
+html.pdf {
+  /* The screen layout is laid out wider than the paper, then scaled down (desktop grid) */
+  zoom: .64;
+  background: var(--c-bg);
+  -webkit-print-color-adjust: exact;
+  print-color-adjust: exact;
+}
+
+html.pdf body {
+  page: cv;
+  background: var(--c-bg);
+}
+
+/* Halos without the blur filter (badly rasterised in PDF): soft radial gradients instead */
+html.pdf .halo { filter: none; width: 90%; background: radial-gradient(closest-side, var(--halo-color), transparent); }
+html.pdf .halo--1 { --halo-color: var(--c-halo-1); right: -25%; top: -60%; }
+html.pdf .halo--2 { --halo-color: var(--c-halo-2); right: 5%; bottom: -75%; width: 70%; }
+html.pdf .halo--3 { --halo-color: var(--c-halo-3); right: -30%; bottom: -55%; width: 60%; }
+
+/* Blurred shadows are printed as dark rectangles: removed (the white ring separates the photo) */
+html.pdf .hero__photo img,
+html.pdf .tile,
+html.pdf .button { box-shadow: none; }
+
+/* --------------------------------------------------------------------------
+   2. Desktop layout on paper: media queries see the A4 width (794 px), so the wide-screen
+      rules of style.css (min-width: 56em) are repeated here for the scaled-down page
+   -------------------------------------------------------------------------- */
+html.pdf .bento { grid-template-columns: repeat(12, minmax(0, 1fr)); }
+html.pdf .bento > .tile--hero { grid-column: span 12; }
+html.pdf .tile--hero .hero__photo {
+  position: absolute; top: 0; bottom: 0; right: 2.5rem;
+  height: max-content; margin: auto 0;
+}
+html.pdf .bento > .tile--languages { grid-column: span 4; }
+html.pdf .bento .stat, html.pdf .bento .stat--wide { grid-column: span 3; }
+html.pdf .bento > .tile--about { grid-column: span 8; }
+html.pdf .bento > .tile--skills { grid-column: span 12; }
+html.pdf .skills { columns: 3; }
+html.pdf .timeline-frame { --col-date: 9.5rem; --col-line: 3rem; --gap: 1.25rem; }
+html.pdf .step { grid-template-columns: var(--col-date) var(--col-line) minmax(0, 1fr); grid-template-areas: "date node tile"; column-gap: 0; }
+html.pdf .step__date { flex-direction: column; align-items: flex-end; gap: .35rem; margin: 0; padding: .2rem var(--gap) 0 0; text-align: right; }
+html.pdf .step__range { display: grid; justify-items: end; }
+html.pdf .step__node { height: 3.2rem; }
+html.pdf .step__tile { margin-left: var(--gap); }
+html.pdf .timeline__rail { top: 1.6rem; }
+html.pdf .position__missions { columns: 2; }
+html.pdf .tile--contact { grid-template-columns: 1.1fr 1fr; align-items: end; }
+
+/* --------------------------------------------------------------------------
+   3. Interface elements hidden on paper
+   -------------------------------------------------------------------------- */
+html.pdf .skip-link,
+html.pdf .bar,
+html.pdf .progress,
+html.pdf .hero__actions,
+html.pdf .card__toggle,
+html.pdf .lang-switch,
+html.pdf .footer__links,
+html.pdf .back-to-top,
+html.pdf .modal,
+html.pdf .error {
+  display: none !important;
+}
+
+/* --------------------------------------------------------------------------
+   4. Page breaks: never inside a tile, a timeline step or a skill group
+   -------------------------------------------------------------------------- */
+html.pdf .tile,
+html.pdf .step,
+html.pdf .skills__group,
+html.pdf .section__header {
+  break-inside: avoid;
+}
+
+html.pdf .section__header {
+  break-after: avoid;
+}
+
+html.pdf .section {
+  margin-top: var(--s-5);
+  padding-top: 0;
+  padding-bottom: 0;
+}
+
+html.pdf .section__header { margin-bottom: var(--s-4); }

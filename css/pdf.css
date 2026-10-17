@@ -27,11 +27,6 @@ html.pdf body {
   background: var(--c-bg);
 }
 
-/* Halos without the blur filter (badly rasterised in PDF): soft radial gradients instead */
-html.pdf .halo { filter: none; width: 90%; background: radial-gradient(closest-side, var(--halo-color), transparent); }
-html.pdf .halo--1 { --halo-color: var(--c-halo-1); right: -25%; top: -60%; }
-html.pdf .halo--2 { --halo-color: var(--c-halo-2); right: 5%; bottom: -75%; width: 70%; }
-html.pdf .halo--3 { --halo-color: var(--c-halo-3); right: -30%; bottom: -55%; width: 60%; }
 
 /* Blurred shadows are printed as dark rectangles: removed (the white ring separates the photo) */
 html.pdf .hero__photo img,
@@ -43,15 +38,15 @@ html.pdf .button { box-shadow: none; }
       rules of style.css (min-width: 56em) are repeated here for the scaled-down page
    -------------------------------------------------------------------------- */
 html.pdf .bento { grid-template-columns: repeat(12, minmax(0, 1fr)); }
-html.pdf .bento > .tile--hero { grid-column: span 12; }
+html.pdf .bento > .tile--hero { grid-column: 1 / -1; }
 html.pdf .tile--hero .hero__photo {
   position: absolute; top: 0; bottom: 0; right: 2.5rem;
   height: max-content; margin: auto 0;
 }
-html.pdf .bento > .tile--languages { grid-column: span 4; }
-html.pdf .bento .stat, html.pdf .bento .stat--wide { grid-column: span 3; }
-html.pdf .bento > .tile--about { grid-column: span 8; }
-html.pdf .bento > .tile--skills { grid-column: span 12; }
+html.pdf .bento > .tile--languages { grid-column: span 8; }
+html.pdf .bento .stat, html.pdf .bento .stat--wide { grid-column: span 6; }
+html.pdf .bento > .tile--about { grid-column: span 16; }
+html.pdf .bento > .tile--skills { grid-column: 1 / -1; }
 html.pdf .skills { columns: 3; }
 html.pdf .timeline-frame { --col-date: 9.5rem; --col-line: 3rem; --gap: 1.25rem; }
 html.pdf .step { grid-template-columns: var(--col-date) var(--col-line) minmax(0, 1fr); grid-template-areas: "date node tile"; column-gap: 0; }
@@ -100,3 +95,200 @@ html.pdf .section {
 }
 
 html.pdf .section__header { margin-bottom: var(--s-4); }
+
+/* --------------------------------------------------------------------------
+   5. Content trimmed for the PDF only: professional experience without the mission lists,
+      client assignments without their descriptions
+   -------------------------------------------------------------------------- */
+html.pdf .timeline .position__missions,
+html.pdf .missions .position__desc {
+  display: none;
+}
+/* Professional experience: a one- or two-line summary per position (position.pdfSummary),
+   with tighter cards so the timeline still ends on page 1 */
+html.pdf .timeline .position__desc { font-size: .9rem; line-height: 1.45; }
+html.pdf .step + .step { margin-top: .75rem; }
+html.pdf .step__tile { padding: .85rem 1.5rem; }
+html.pdf .timeline .card__header { margin-bottom: .5rem; }
+html.pdf .timeline .position + .position { margin-top: .75rem; }
+html.pdf .timeline .position__meta { margin-bottom: .4rem; }
+
+/* --------------------------------------------------------------------------
+   6. Languages and skills beside the professional experience: the opening bento and the
+      sections share one 12-column grid (bento flattened), right column next to the timeline
+   -------------------------------------------------------------------------- */
+html.pdf main {
+  display: grid;
+  grid-template-columns: repeat(24, minmax(0, 1fr));   /* fine columns for the tile widths */
+  grid-auto-flow: row dense;   /* the experience fills the space left of the skills tile */
+  align-items: start;
+  column-gap: var(--s-gutter);
+}
+html.pdf .bento { display: contents; }
+html.pdf main > .section { grid-column: 1 / -1; }
+/* Timeline, languages and skills share one grid row (a row-spanning item is mis-sized when it
+   breaks across pages): languages have a fixed height and skills start right below them */
+html.pdf main { --languages-height: 13.5rem; }   /* measured natural height: 13.15rem */
+html.pdf .bento > .tile--about { grid-column: 1 / -1; }
+html.pdf main > #experience { grid-column: 1 / 17; grid-row: 4; }
+html.pdf .bento > .tile--languages { grid-column: 17 / -1; grid-row: 4; height: var(--languages-height); margin-top: var(--s-5); }
+html.pdf .bento > .tile--skills {
+  grid-column: 17 / -1; grid-row: 4;
+  margin-top: calc(var(--s-5) + var(--languages-height) + var(--s-gutter));
+}
+html.pdf .skills { columns: 1; }
+
+/* Compact right column so languages and skills fit beside the timeline on the first page */
+html.pdf .about__text { max-width: none; }
+html.pdf .tile--languages,
+html.pdf .tile--skills { padding: 1.25rem 1.4rem; }
+html.pdf .tile--skills .tile__title { margin-bottom: .25rem; }
+html.pdf .skills__group + .skills__group { margin-top: .6rem; }
+html.pdf .tags { gap: .3rem; }
+html.pdf .tags li { padding: .2rem .55rem; font-size: .8rem; }
+
+/* --------------------------------------------------------------------------
+   7. Summary tiles reduced and set as a 2 × 2 block to the right of "About"
+   -------------------------------------------------------------------------- */
+html.pdf .bento > .tile--about { grid-column: 1 / 14; grid-row: 2 / span 2; }
+/* Top row: specialty, end to end; bottom row: years of experience, automation.
+   The left pair is narrower (5/24) than the right pair (6/24) */
+html.pdf .bento__stats > .tile:nth-child(2) { grid-column: 14 / 19; grid-row: 2; }
+html.pdf .bento__stats > .tile:nth-child(3) { grid-column: 19 / -1; grid-row: 2; }
+html.pdf .bento__stats > .tile:nth-child(1) { grid-column: 14 / 19; grid-row: 3; }
+html.pdf .bento__stats > .tile:nth-child(4) { grid-column: 19 / -1; grid-row: 3; }
+html.pdf .stat { min-height: 0; gap: .45rem; padding: .8rem .75rem; }
+html.pdf .stat .stat__label { font-size: .86rem; }
+html.pdf .stat__value { font-size: 2.35rem; }
+html.pdf .stat__ticks { gap: 3px; margin-bottom: .25rem; }
+html.pdf .stat__ticks i { height: 4px; }
+html.pdf .strength__title { font-size: 1.22rem; }
+html.pdf .strength__detail { margin-top: -.2rem; font-size: .86rem; }
+html.pdf .strength__logo { width: 1.7rem; height: 1.7rem; }
+html.pdf .strength__steps { gap: .75rem .5rem; }   /* rows, then tags */
+html.pdf .strength__steps li { padding: .1rem .32rem; border-width: 1px; font-size: .7rem; }
+/* Even spacing between the four tiles (the page gutter, both ways) */
+html.pdf .bento__stats > .tile:nth-child(2),
+html.pdf .bento__stats > .tile:nth-child(3) { margin-bottom: calc(var(--s-gutter) / 2); }
+html.pdf .bento__stats > .tile:nth-child(1),
+html.pdf .bento__stats > .tile:nth-child(4) { margin-top: calc(var(--s-gutter) / 2); }
+/* The tiles fill the height of "About" (two equal rows): same height for all four, and the
+   block lines up with "About" at the top and the bottom */
+html.pdf .bento__stats > .tile { align-self: stretch; }
+html.pdf main { grid-template-rows: auto 1fr 1fr; }   /* row 1 hero, rows 2–3 the tiles: two equal rows */
+html.pdf .bento > .tile--about { align-self: stretch; }   /* "About" spans exactly the height of the tiles */
+/* Automation: lightning icon floated against the right edge, vertically centred; the text
+   keeps clear of it */
+html.pdf .bento__stats > .tile:nth-child(4) { position: relative; padding-right: 2.9rem; }
+html.pdf .bento__stats > .tile:nth-child(4) .strength__logo {
+  position: absolute; top: 50%; right: .9rem; transform: translateY(-50%);
+}
+/* Years of experience: some space above the "10" */
+html.pdf .bento__stats > .tile:nth-child(1) .stat__value { margin-top: .5rem; }
+/* Slightly larger text for "years of experience" and the detail lines (specialty, automation) */
+html.pdf .bento__stats > .tile:nth-child(1) .stat__label,
+html.pdf .bento__stats .strength__detail { font-size: 1.02rem; }
+/* "My specialty", "End to end", "Automation": shown as tile titles */
+html.pdf .bento__stats .strength .stat__label {
+  font: 600 1.25rem/1.15 var(--f-text); letter-spacing: 0; opacity: 1;   /* same font as "years of experience", larger */
+}
+html.pdf .bento__stats .strength .stat__label + .strength__title { margin-top: .15rem; }
+/* Automation: some space above its title */
+html.pdf .bento__stats > .tile:nth-child(4) .stat__label { margin-top: .5rem; }
+
+/* --------------------------------------------------------------------------
+   8. Hero: same blurred halos as the site, and the same space below it as between languages
+      and skills (the page gutter)
+   -------------------------------------------------------------------------- */
+html.pdf .tile--hero { border: 0; }   /* no white rim around the halos */
+html.pdf .bento > .tile--hero { margin-bottom: var(--s-gutter); }
+/* A slightly taller hero (more padding above and below); with the contact line, 2.6rem keeps
+   IBS on page 1 in both languages */
+html.pdf .tile--hero { padding-top: 2.6rem; padding-bottom: 2.6rem; }
+
+/* Email and phone links under the hero title (added in PDF mode only by main.js) */
+html.pdf .hero__contact { display: flex; flex-wrap: wrap; gap: .5rem 1.5rem; margin-top: .9rem; }
+html.pdf .hero__contact a {
+  display: inline-flex; align-items: center; gap: .45rem;
+  color: var(--c-text); font-weight: 600; font-size: 1.3rem; text-decoration: none;
+}
+html.pdf .hero__contact-icon { width: 1.25rem; height: 1.25rem; fill: var(--c-accent); }
+/* Larger profile photo (absolutely positioned on the right: the hero height is unchanged) */
+html.pdf .hero__photo img { width: 15rem; }
+
+/* --------------------------------------------------------------------------
+   10. Contact: one column (title, email and phone buttons), then the four networks as
+       rounded pills on one line (logo and handle; network name and arrow left out)
+   -------------------------------------------------------------------------- */
+html.pdf .tile--contact { grid-template-columns: 1fr; align-items: start; gap: var(--s-5); padding-top: 2.5rem; padding-bottom: 2.5rem; }
+html.pdf .contact__links { display: flex; flex-wrap: wrap; gap: .6rem; }
+html.pdf .contact__links a {
+  min-height: 0; justify-content: flex-start; gap: .5rem;
+  padding: .5rem 1rem; border-radius: var(--r-pill);
+}
+html.pdf .contact__links small,
+html.pdf .contact__links a > svg:last-of-type { display: none; }   /* the arrow (a hidden "new tab" text follows it) */
+html.pdf .contact__text { flex: none; }
+/* Networks: the link written in each pill (short form from main.js, read from the link itself:
+   no "https://", no "www."), instead of the handle */
+html.pdf .contact__links .contact__text { display: none; }
+html.pdf .contact__links a::after {
+  content: attr(data-short); position: static; inset: auto; border-radius: 0;
+  background: none; opacity: 1; font-weight: 700;
+}
+/* Larger network icons in the contact pills */
+html.pdf .contact__links .contact__logo { width: 1.7rem; height: 1.7rem; }
+
+/* --------------------------------------------------------------------------
+   11. Contact beside the client assignments (page 2): assignments on the left half with their
+       tiles stacked, contact on the right half (it fills the gap thanks to the dense grid);
+       education stays full width below
+   -------------------------------------------------------------------------- */
+html.pdf main > #missions { grid-column: 1 / 17; }
+html.pdf .missions { grid-template-columns: 1fr 1fr; }   /* two assignments per row */
+html.pdf main > #contact { grid-column: 17 / -1; }   /* narrower contact block */
+/* Email and phone each on their own line */
+html.pdf .contact__actions { flex-direction: column; align-items: flex-start; }
+/* "Contact" title styled like the section titles ("Client assignments") */
+html.pdf .contact__header h2 { font-size: var(--t-h2); font-weight: 900; letter-spacing: -.05em; line-height: var(--lh-title); }
+/* Assignments: the subtitle under the title rather than on its right */
+html.pdf main > #missions .section__header { flex-direction: column; align-items: flex-start; gap: .25rem; }
+/* Education under the assignments, on the left of the contact tile, which spans both sections */
+html.pdf main > #education { grid-column: 1 / 17; }
+html.pdf .education { grid-template-columns: 1fr; }   /* one education entry per row */
+html.pdf .tile--contact { align-content: start; }   /* content grouped at the top of the taller tile */
+html.pdf .footer { display: none; }   /* no copyright line in the PDF */
+
+/* Interests (PDF only, added by main.js): a violet tile under the contact tile, title inside */
+/* Page 2 (rows 1–4 are page 1): assignments (row 5) and education (row 6) on the left; on the
+   right, the side column built by main.js stacks contact and interests with the usual gap */
+html.pdf main > #missions { grid-row: 5; }
+html.pdf main > #education { grid-row: 6; }
+html.pdf main > .pdf-side {
+  grid-row: 5 / span 2; grid-column: 17 / -1; align-self: start;
+  display: flex; flex-direction: column; gap: var(--s-gutter);
+  margin-top: var(--s-5);   /* same top as the sections on the left */
+}
+html.pdf .pdf-side > .section { margin-top: 0; }
+html.pdf main > .pdf-side #hobbies { padding: 1.6rem 1.75rem 1.75rem;
+  border-radius: var(--r-xl); background: var(--c-accent); color: var(--c-on-accent);
+}
+html.pdf #hobbies .section__header { min-height: 0; margin: 0 0 var(--s-4); }
+html.pdf #hobbies .section__header h2 { font-size: var(--t-h2); font-weight: 900; letter-spacing: -.05em; }
+html.pdf #hobbies .tile { padding: 0; border: 0; border-radius: 0; background: none; overflow: visible; }   /* no clipped tags */
+html.pdf #hobbies .tags li { border-color: rgba(255, 255, 255, .45); background: rgba(255, 255, 255, .16); color: inherit; }
+/* "Contact" and "Interests" titles in the style of the tile taglines ("What I speak") */
+html.pdf .contact__header h2,
+html.pdf #hobbies .section__header h2 { font: 800 clamp(1.35rem, 1.1rem + 1vw, 2rem)/1.1 var(--f-title); letter-spacing: -.03em; }
+/* Interests: icons in the tags, more space between the tags (both ways) */
+html.pdf #hobbies .tags { gap: .55rem .5rem; }
+html.pdf #hobbies .tags__logo { fill: currentColor; opacity: 1; }
+
+/* --------------------------------------------------------------------------
+   12. Text read by applicant tracking systems (ATS): the text of the PDF follows the paint
+       order, where positioned boxes (the tiles) come after the others; sections positioned
+       too, so each heading is read with its content, in document order
+   -------------------------------------------------------------------------- */
+html.pdf main .section { position: relative; }
+html.pdf .pdf-nowrap { white-space: nowrap; }
+html.pdf .name__word { padding-bottom: .2em; }   /* lines far enough apart to be read as two lines, not "RamziBougdar" */

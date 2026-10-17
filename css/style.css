@@ -130,7 +130,7 @@ img { max-width: 100%; height: auto; }
 .bar__inner {
   position: relative;
   display: flex; flex-wrap: wrap; align-items: center; gap: .5rem;
-  max-width: 62rem; margin: 0 auto; padding: .375rem;   /* bar narrower than the content, wide enough to center the menu */
+  max-width: 54rem; margin: 0 auto; padding: .375rem;   /* bar narrower than the content */
   border-radius: 1.75rem; border: 1px solid var(--c-border);
   background: var(--c-tile); box-shadow: var(--shadow-float);
 }
@@ -502,10 +502,9 @@ html:not(.js) .modal__close { display: none; }
    -------------------------------------------------------------------------- */
 @media (min-width: 64em) {
   .js .bar__menu { display: none; }
-  /* Centered menu: three-area grid (empty, menu, actions) */
-  .bar__inner { display: grid; grid-template-columns: 1fr auto 1fr; }
-  .menu, .js .menu { display: block; grid-column: 2; order: 0; width: auto; }
-  .bar__actions { grid-column: 3; justify-self: end; }
+  /* Bar as wide as its content: menu on the left, actions right after it */
+  .bar__inner { flex-wrap: nowrap; width: fit-content; gap: 1rem; }
+  .menu, .js .menu { display: block; order: 0; width: auto; }
   .menu__list, .js .menu__list { flex-direction: row; padding: 0; }
   .menu__list a { padding: 0 .875rem; }
 }

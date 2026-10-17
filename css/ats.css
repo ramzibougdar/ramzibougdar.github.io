@@ -1,0 +1,37 @@
+/* ==========================================================================
+   ats.css — CV Ramzi Bougdar
+   Plain PDF for applicant tracking systems (ATS), generated in ?ats mode only (js/main.js
+   loads this sheet then; the site never does). Styles the one-column document built by
+   js/pdf.js (article.ats), over print.css: black on white, standard titles, plain text.
+   ========================================================================== */
+
+@page { margin: 12mm 16mm; }
+
+html.ats .bar,
+html.ats .footer { display: none !important; }
+
+.ats { font: 400 10pt/1.4 var(--f-text); color: #000000; }
+.ats h1 { margin: 0; font: 800 20pt/1.2 var(--f-text); letter-spacing: 0; }
+.ats p { margin: 0; }
+.ats__title { margin-top: 1mm !important; font-size: 11pt; font-weight: 700; }
+
+.ats h2 {
+  margin: 5mm 0 2mm;
+  padding-bottom: 1mm;
+  border-bottom: 1px solid #000000;
+  font: 800 11.5pt/1.3 var(--f-text);
+  letter-spacing: 0;
+  text-transform: uppercase;
+}
+.ats h3 { margin: 0; font: 700 10.5pt/1.3 var(--f-text); letter-spacing: 0; }
+.ats__meta { color: #333333; }
+
+.ats ul { margin: 1mm 0 0; padding-left: 5mm; list-style: disc; }
+.ats li { margin: 0; padding: 0; }
+.ats section > ul { padding-left: 0; list-style: none; }
+
+.ats__employer + .ats__employer,
+.ats__job + .ats__job { margin-top: 3mm; }
+.ats__job { break-inside: avoid; }
+.ats h2, .ats h3 { break-after: avoid; }
+

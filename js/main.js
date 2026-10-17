@@ -24,7 +24,10 @@ var PRIVATE_PATH = window.CV_I18N.asset('data/private.js');
 var LOCAL_FILE = window.location.protocol === 'file:';
 
 /** PDF generation mode: on when the URL contains "?pdf". */
-var PDF_MODE = /[?&]pdf\b/.test(window.location.search);
+/** ATS mode (?ats): the plain PDF for applicant tracking systems, a one-column document built
+    by js/pdf.js and styled by css/ats.css over the black-on-white print sheet. */
+var ATS_MODE = /[?&]ats\b/.test(window.location.search);
+var PDF_MODE = ATS_MODE || /[?&]pdf\b/.test(window.location.search);
 
 /** Pre-render mode (?prerender): used by scripts/generate-metadata.js to copy the rendered
     CV into the HTML source, so robots that do not run JavaScript read the whole CV. */
@@ -32,7 +35,11 @@ var PRERENDER_MODE = /[?&]prerender\b/.test(window.location.search);
 
 // PDF mode: the downloadable PDF keeps the site's identity (css/pdf.css), so the sober
 // print sheet used by a visitor's Ctrl+P is turned off.
-if (PDF_MODE) {
+if (ATS_MODE) {
+  document.documentElement.classList.add('ats');
+  document.querySelectorAll('link[rel="stylesheet"][href$="pdf.css"]').forEach(function (l) { l.media = 'not all'; });
+  document.head.appendChild(create('link', { rel: 'stylesheet', href: window.CV_I18N.asset('css/ats.css'), media: 'print' }));
+} else if (PDF_MODE) {
   document.documentElement.classList.add('pdf');
   document.querySelectorAll('link[rel="stylesheet"][href$="print.css"]').forEach(function (l) { l.media = 'not all'; });
 }
@@ -380,6 +387,8 @@ function renderPosition(position) {
     meta
   ]);
   if (position.description) block.appendChild(create('p', { className: 'position__desc' }, text(position.description, 'description')));
+  // The downloadable PDF gives each position a summary of one or two lines (position.pdfSummary)
+  if (PDF_MODE && position.pdfSummary) block.appendChild(create('p', { className: 'position__desc' }, text(position.pdfSummary)));
   // Quantified achievements (optional "highlights"), always visible, before the missions
   if (position.highlights && position.highlights.length) {
     block.appendChild(create('p', { className: 'position__label' }, T.highlights));
@@ -643,13 +652,103 @@ function renderCV(cv) {
   renderHero(cv.profile);
   renderStats(cv);
   renderLanguages(cv.languages);
-  renderAbout(cv.profile.summary, cv.profile.title);
+  // The downloadable PDF uses the shorter summary when one is given (profile.pdfSummary)
+  renderAbout(PDF_MODE && cv.profile.pdfSummary ? cv.profile.pdfSummary : cv.profile.summary, cv.profile.title);
   renderSkills(cv.skills);
   renderTimeline(cv);
   renderClientMissions(cv);
   renderEducation(cv.education);
+  renderHobbies(cv.hobbies);
   renderContact(cv.contact);
   renderFooter(cv);
+  if (ATS_MODE) {
+    // The ATS version is a plain document of its own, built by js/pdf.js
+    loadPdfCode(function () { window.CV_PDF.renderAts(cv); });
+  } else if (PDF_MODE) {
+    renderPdfHeroContact(cv.contact);
+    renderPdfHobbies();
+    prepareAtsText();
+  }
+}
+
+/**
+ * PDF only: loads js/pdf.js (code of the PDF, never downloaded by the site), then runs onload.
+ * @param {Function} onload
+ */
+function loadPdfCode(onload) {
+  var script = document.createElement('script');
+  script.src = window.CV_I18N.asset('js/pdf.js');
+  script.onload = onload;
+  document.head.appendChild(script);
+}
+
+/**
+ * Renders the interests (hobbies of data/cv.js) as tags; the section is hidden when empty.
+ * @param {Array} hobbies
+ */
+function renderHobbies(hobbies) {
+  // Each hobby: { label, icon } (pictogram key of js/icons.js), or a plain text
+  var list = (hobbies || []).map(function (h) { return typeof h === 'string' ? { label: h } : h; })
+    .filter(function (h) { return h && typeof h.label === 'string'; });
+  var section = document.getElementById('hobbies');
+  if (section) section.hidden = !list.length;
+  fill('hobbies', list.length ? create('div', { className: 'tile', 'data-anim': 'reveal' }, create('ul', { className: 'tags' }, list.map(function (h) {
+    return create('li', null, [h.icon ? logoSvg(h.icon) : null, h.label]);
+  }))) : null);
+}
+
+/**
+ * PDF only: the interests stacked under the contact tile in a side column (div.pdf-side), so
+ * the two tiles keep the usual gap, with their tags packed in full rows.
+ */
+function renderPdfHobbies() {
+  var contact = document.getElementById('contact');
+  var hobbies = document.getElementById('hobbies');
+  if (!contact || !hobbies || hobbies.hidden) return;
+  var side = create('div', { className: 'pdf-side' });
+  contact.before(side);
+  side.append(contact, hobbies);
+  // The tag packing lives in js/pdf.js
+  loadPdfCode(function () { window.CV_PDF.packTags(hobbies.querySelector('.tags')); });
+}
+
+/**
+ * PDF only: text as read by applicant tracking systems (ATS). The name as plain words (its
+ * letters, one box each for the site animation, are read "RamziBougdar"), and no line break
+ * inside a hyphenated word of the title (otherwise read "e- commerce").
+ */
+function prepareAtsText() {
+  document.querySelectorAll('.name__word').forEach(function (word) { word.textContent = word.textContent; });
+  var title = document.querySelector('.hero__title');
+  if (!title || title.children.length) return;
+  var parts = title.textContent.split(/(\S+-\S+)/);
+  title.textContent = '';
+  parts.forEach(function (part, k) {
+    title.appendChild(k % 2 ? create('span', { className: 'pdf-nowrap' }, part) : document.createTextNode(part));
+  });
+}
+
+/**
+ * PDF only: email and phone, as links, under the title of the hero (never added to the site,
+ * so robots reading the page still find neither of them), and the short form of the network links.
+ * @param {Object} contact
+ */
+function renderPdfHeroContact(contact) {
+  var title = document.querySelector('.hero__title');
+  if (!title || !contact) return;
+  var links = [];
+  if (typeof contact.email === 'string') {
+    links.push(create('a', { href: 'mailto:' + contact.email }, [logoSvg('email', 'hero__contact-icon'), contact.email]));
+  }
+  if (contact.phone) {
+    var number = String(contact.phone);
+    links.push(create('a', { href: 'tel:' + number.replace(/[^\d+]/g, '') }, [logoSvg('phone', 'hero__contact-icon'), number]));
+  }
+  if (links.length) title.after(create('p', { className: 'hero__contact' }, links));
+  // Network links: a short form of each address (no "https://", no "www.", no final "/") shown by css/pdf.css
+  document.querySelectorAll('.contact__links a[href^="http"]').forEach(function (a) {
+    a.setAttribute('data-short', a.getAttribute('href').replace(/^https?:\/\/(www\.)?/, '').replace(/\/$/, ''));
+  });
 }
 
 

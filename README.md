@@ -87,13 +87,14 @@ retirer au contenu.
 | Bloc | Contenu |
 |------|---------|
 | `meta` | `siteUrl` (adresse publique du site, pour les URL absolues), `updatedOn`, `source` |
-| `profile` | `name` (obligatoire), `title`, `location`, `summary` (texte ou liste de paragraphes), `strengths[]`, `photo` |
+| `profile` | `name` (obligatoire), `title`, `location`, `summary` (texte ou liste de paragraphes), `pdfSummary?` (version courte de « Qui suis-je », utilisée seulement dans les PDF), `strengths[]`, `photo` |
 | `strengths[]` | tuiles « points forts » : `label`, puis `title`, `steps[]` ou `logo`, `detail?`, `color` (`gradient`, `active`, `warm` ou `accent`) |
 | `contact` | `email`, `phone`, `linkedin`, `github`, `instagram`, `tiktok` (URL en `https://`) |
 | `experiences[]` | `employer`, `location?`, `positions[]` |
 | `positions[]` | `title`, `type` (`employee`, `mission` ou `internship`), `start` (`AAAA-MM`), `end` (`AAAA-MM` ou `null` = « aujourd'hui »), `location?`, `description?`, `via?` (employeur pour le compte duquel une mission a été réalisée, affiché « Mission pour … »), `highlights[]?` (réalisations chiffrées, affichées en « Résultats clés »), `missions[]` |
 | `education[]` | `school`, `degree`, `field`, `start`, `end` (`AAAA`) |
 | `skills[]` | `category`, `items[]` |
+| `hobbies[]` | centres d'intérêt `{ label, icon }` (`label` bilingue, `icon` : clé de `js/icons.js`), affichés seulement dans les PDF |
 | `languages[]` | `language`, `level` |
 | `pdf` | `file`, `downloadName`, `generatedOn` |
 
@@ -142,10 +143,18 @@ le téléphone est ajouté.
    ```bash
    for l in en fr; do
      "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome" --headless=new \
-       --no-pdf-header-footer --virtual-time-budget=5000 \
+       --no-pdf-header-footer --virtual-time-budget=5000 --window-size=794,1123 \
        --print-to-pdf=assets/CV-Ramzi-Bougdar-$l.pdf "file://$PWD/$l/index.html?pdf"
+     "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome" --headless=new \
+       --no-pdf-header-footer --virtual-time-budget=5000 --window-size=794,1123 \
+       --print-to-pdf=assets/CV-Ramzi-Bougdar-ATS-$l.pdf "file://$PWD/$l/index.html?ats"
    done
    ```
+
+   `CV-Ramzi-Bougdar-ATS-*.pdf` est la version sobre pour les logiciels de recrutement (ATS) :
+   une colonne, noir sur blanc, toutes les missions (mode `?ats`, `js/pdf.js` et `css/ats.css`).
+
+   `--window-size=794,1123` (largeur A4) sert à ranger les centres d'intérêt pour que chaque ligne soit pleine.
 
    Variante manuelle : ouvrez `en/index.html?pdf` (puis `fr/index.html?pdf`) dans Chrome, faites Imprimer → « Enregistrer au
    format PDF », marges par défaut, en-têtes et pieds de page désactivés.

@@ -29,6 +29,12 @@ window.CV_DATA = {
         "fr": "Je m'appuie sur une solide expertise e-commerce B2C et B2B sur PrestaShop et Shopify : modules sur mesure, intégrations et connexions aux APIs, webservices, flux de données et logistiques. Au-delà du code, je pilote les projets de bout en bout (analyse et estimation, spécifications technico-fonctionnelles, gestion de projet MOE / AMOA, déploiement) et j'encadre les équipes techniques."
       }
     ],
+    "pdfSummary": [
+      {
+        "en": "I connect two worlds: AI and e-commerce. A full stack developer, I build AI agents, automations and internal tools, and I integrate AI into stores on PrestaShop, Shopify and other platforms, for B2C and B2B alike.",
+        "fr": "Je relie deux mondes : l'IA et l'e-commerce. Développeur full stack, je conçois des agents IA, des automatisations et des outils internes, et j'intègre l'IA aux boutiques PrestaShop, Shopify et autres solutions, en B2C comme en B2B."
+      }
+    ],
     "strengths": [
       {
         "label": { "en": "My specialty", "fr": "Ma spécialité" },
@@ -79,6 +85,7 @@ window.CV_DATA = {
           "type": "employee",
           "start": "2023-02",
           "end": null,
+          "pdfSummary": { "en": "AI applications (agents, automation, internal tools), AI integrated into online stores. B2C and B2B e-commerce with PrestaShop and Shopify.", "fr": "Applications avec l'IA (agents, automatisation, outils internes), IA intégrée aux boutiques. E-commerce B2C et B2B sous PrestaShop et Shopify." },
           "missions": [
             { "en": "Building applications with AI: agents, automation, content generation, document analysis, internal tools", "fr": "Développement d'applications avec l'IA : agents, automatisation, génération de contenu, analyse de documents, outils internes" },
             { "en": "Integration of AI into e-commerce stores", "fr": "Intégration de l'IA dans des boutiques e-commerce" },
@@ -99,6 +106,7 @@ window.CV_DATA = {
           "type": "employee",
           "start": "2020-04",
           "end": "2022-12",
+          "pdfSummary": { "en": "PrestaShop modules, APIs, web services and data flows. Architecture, agile estimation, code review, technical leadership.", "fr": "Modules PrestaShop, APIs, webservices et flux de données. Architecture, estimation agile, revue de code, encadrement." },
           "missions": [
             { "en": "Analysis of functional and technical specifications, definition of the architecture and choice of technologies", "fr": "Analyse des spécifications fonctionnelles et techniques, définition de l'architecture et choix des technologies" },
             { "en": "Task breakdown, estimation and planning in an agile context", "fr": "Découpage des tâches, estimation et planification dans un contexte agile" },
@@ -115,7 +123,7 @@ window.CV_DATA = {
       "employer": "Parrot",
       "positions": [
         {
-          "title": { "en": "E-commerce Expert", "fr": "Expert E-commerce" },
+          "title": { "en": "E-commerce Expert", "fr": "Expert e-commerce" },
           "type": "mission",
           "via": "EVOLUTIVE GROUP",
           "start": "2020-02",
@@ -129,7 +137,7 @@ window.CV_DATA = {
       "employer": "Kisio Digital",
       "positions": [
         {
-          "title": { "en": "E-commerce Expert", "fr": "Expert E-commerce" },
+          "title": { "en": "E-commerce Expert", "fr": "Expert e-commerce" },
           "type": "mission",
           "via": "EVOLUTIVE GROUP",
           "start": "2019-03",
@@ -147,6 +155,7 @@ window.CV_DATA = {
           "type": "employee",
           "start": "2018-12",
           "end": "2020-03",
+          "pdfSummary": { "en": "Managed the developers of the Lyon agency, roadmaps, web services and PrestaShop APIs.", "fr": "Gestion des développeurs de l'agence de Lyon, roadmaps, webservices et APIs PrestaShop." },
           "missions": [
             { "en": "Management of the developers of the Lyon agency", "fr": "Gestion des développeurs de l'agence de Lyon" },
             { "en": "Task estimation and development roadmap planning", "fr": "Estimation des tâches et élaboration des roadmaps de développement" },
@@ -160,6 +169,7 @@ window.CV_DATA = {
           "type": "employee",
           "start": "2018-01",
           "end": "2018-11",
+          "pdfSummary": { "en": "Mock-up integration and PrestaShop modules.", "fr": "Intégration des maquettes et modules PrestaShop." },
           "missions": [
             { "en": "Mock-up integration", "fr": "Intégration des maquettes" },
             { "en": "Design and development of PrestaShop modules", "fr": "Conception et développement de modules PrestaShop" }
@@ -175,6 +185,7 @@ window.CV_DATA = {
           "type": "employee",
           "start": "2017-01",
           "end": "2017-12",
+          "pdfSummary": { "en": "Custom web applications.", "fr": "Applications web sur mesure." },
           "missions": [
             { "en": "Design and development of custom web applications", "fr": "Conception et développement d'applications web sur mesure" }
           ]
@@ -184,6 +195,7 @@ window.CV_DATA = {
           "type": "internship",
           "start": "2016-02",
           "end": "2016-12",
+          "pdfSummary": { "en": "Web and Android applications.", "fr": "Applications web et Android." },
           "missions": [
             { "en": "Web application development", "fr": "Développement d'applications web" },
             { "en": "Android application development", "fr": "Développement d'applications Android" }
@@ -214,6 +226,20 @@ window.CV_DATA = {
     { "category": "Back-end", "items": ["PHP", "Symfony", "Laravel", "Python", "FastAPI", "Node.js", "MySQL"] },
     { "category": "Front-end", "items": ["TypeScript", "JavaScript", "React", "Next.js", "HTML5", "CSS / Sass"] },
     { "category": { "en": "Tools", "fr": "Outils" }, "items": ["Docker", "Git", "Webpack"] }
+  ],
+  "hobbies": [
+    { "label": { "en": "Photography", "fr": "Photographie" }, "icon": "camera" },
+    { "label": { "en": "Travel", "fr": "Voyages" }, "icon": "plane" },
+    { "label": { "en": "Walking", "fr": "Marche" }, "icon": "walk" },
+    { "label": { "en": "Sea and beach", "fr": "Mer et plage" }, "icon": "beach" },
+    { "label": { "en": "Cooking", "fr": "Cuisine" }, "icon": "cutlery" },
+    { "label": { "en": "Gastronomy", "fr": "Gastronomie" }, "icon": "cloche" },
+    { "label": { "en": "Video games", "fr": "Jeux vidéo" }, "icon": "gamepad" },
+    { "label": { "en": "Tech", "fr": "Tech" }, "icon": "laptop" },
+    { "label": { "en": "Board games", "fr": "Jeux de société" }, "icon": "dice" },
+    { "label": { "en": "Music", "fr": "Musique" }, "icon": "music" },
+    { "label": { "en": "Content creation", "fr": "Création de contenu" }, "icon": "video" },
+    { "label": { "en": "Cars", "fr": "Automobile" }, "icon": "car" }
   ],
   "languages": [
     {

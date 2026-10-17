@@ -1,18 +1,28 @@
 /* ==========================================================================
    icons.js — CV Ramzi Bougdar
-   SVG paths of technology logos (Simple Icons 16.35.0, CC0 licence)
-   and two pictograms drawn for this site (agents, automation),
-   precision reduced to 0.1 unit (invisible at 16 px). Rendered as inline SVG by
-   js/main.js, text colour via currentColor. Presentation only.
+   Technology logos (Simple Icons 16.35.0, CC0) and pictograms drawn for this site,
+   precision 0.1 unit. Rendered as inline SVG by js/main.js (currentColor).
    Exposes window.CV_ICONS.
    ========================================================================== */
 
 window.CV_ICONS = {
-  // Pictograms drawn for this site (no brand): robot head and lightning bolt.
-  // An object { d, rule } sets the fill rule (evenodd: hollow eyes and mouth).
+  // Drawn for this site; { d, rule }: fill rule (evenodd for holes)
   agents: { d: 'M12 1.5a1.5 1.5 0 0 1 .75 2.8V7H18a3 3 0 0 1 3 3v7a3 3 0 0 1-3 3H6a3 3 0 0 1-3-3v-7a3 3 0 0 1 3-3h5.25V4.3A1.5 1.5 0 0 1 12 1.5zM9 11.25a1.75 1.75 0 1 0 0 3.5 1.75 1.75 0 0 0 0-3.5zm6 0a1.75 1.75 0 1 0 0 3.5 1.75 1.75 0 0 0 0-3.5zM9.75 16.5a.75.75 0 0 0 0 1.5h4.5a.75.75 0 0 0 0-1.5zM.75 11.5h1.5v5H.75zm21 0h1.5v5h-1.5z', rule: 'evenodd' },
   automation: 'M13.5 1.5 3.75 13.5h6.75L9.75 22.5 20.25 9.75h-6.75z',
-  // Contact: pictograms drawn for this site (LinkedIn is no longer provided by Simple Icons).
+  // Interests
+  camera: { d: 'M9 4 7.5 6H4a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-3.5L15 4zm3 4.5a4.5 4.5 0 1 1 0 9 4.5 4.5 0 0 1 0-9z', rule: 'evenodd' },
+  plane: 'M21 16v-2l-8-5V3.5a1.5 1.5 0 0 0-3 0V9l-8 5v2l8-2.5V19l-2 1.5V22l3.5-1 3.5 1v-1.5L13 19v-5.5z',
+  cutlery: 'M7 2v7a2 2 0 0 1-1 1.7V22H4V10.7A2 2 0 0 1 3 9V2h1v6h1V2h1v6h1V2zm10 0c-2 0-3 2.5-3 6v5h2v9h2V2z',
+  gamepad: 'M7 7h10a5 5 0 0 1 4.9 6l-.8 4a2.5 2.5 0 0 1-4.3 1.2L15 16H9l-1.8 2.2A2.5 2.5 0 0 1 2.9 17l-.8-4A5 5 0 0 1 7 7z',
+  music: 'M10 3h9v4h-7v10.5a3.5 3.5 0 1 1-2-3.2z',
+  video: 'M3 6h12a1 1 0 0 1 1 1v3l5-3v10l-5-3v3a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1z',
+  walk: 'M13.5 5.5a2 2 0 1 0 0-4 2 2 0 0 0 0 4zM9.8 9 7 23h2.1l1.8-8 2.1 2v6h2v-7.5l-2.1-2 .6-3A7 7 0 0 0 19 13v-2c-2 0-3.5-1-4.3-2.4l-1-1.6a2 2 0 0 0-2.5-.8L6 8.3V13h2V9.6z',
+  beach: 'M12 2a4 4 0 1 1 0 8 4 4 0 0 1 0-8zM2 13c2 0 2.5-1.5 5-1.5s3 1.5 5 1.5 2.5-1.5 5-1.5 3 1.5 5 1.5v2c-2 0-2.5-1.5-5-1.5s-3 1.5-5 1.5-2.5-1.5-5-1.5S4 15 2 15zm0 5c2 0 2.5-1.5 5-1.5s3 1.5 5 1.5 2.5-1.5 5-1.5 3 1.5 5 1.5v2c-2 0-2.5-1.5-5-1.5s-3 1.5-5 1.5-2.5-1.5-5-1.5S4 20 2 20z',
+  cloche: 'M11 4h2v1.1A8 8 0 0 1 20 13H4a8 8 0 0 1 7-7.9zM2 15h20v2H2z',
+  dice: { d: 'M5 3h14a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2zm3 3.5a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3zm8 8a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3zm-4-4a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3z', rule: 'evenodd' },
+  car: { d: 'M5 11l1.5-4.5A2 2 0 0 1 8.4 5h7.2a2 2 0 0 1 1.9 1.5L19 11a2 2 0 0 1 2 2v4h-2v2h-3v-2H8v2H5v-2H3v-4a2 2 0 0 1 2-2zm2.1 0h9.8l-1-3.2a1 1 0 0 0-1-.8H9.1a1 1 0 0 0-1 .8zM7 13a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3zm10 0a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3z', rule: 'evenodd' },
+  laptop: { d: 'M4 5a1 1 0 0 1 1-1h14a1 1 0 0 1 1 1v10H4zm2 2v6h12V7zM1 17h22v1a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2z', rule: 'evenodd' },
+  // Contact (drawn: LinkedIn left Simple Icons)
   linkedin: { d: 'M3 1.5h18A1.5 1.5 0 0 1 22.5 3v18a1.5 1.5 0 0 1-1.5 1.5H3A1.5 1.5 0 0 1 1.5 21V3A1.5 1.5 0 0 1 3 1.5zM5.25 9h3v10h-3zM6.75 4.5a1.75 1.75 0 1 0 0 3.5 1.75 1.75 0 0 0 0-3.5zM10.5 9h2.85v1.4c.45-.85 1.55-1.7 3.2-1.7 3.1 0 3.7 2 3.7 4.7V19h-3v-4.9c0-1.2 0-2.6-1.6-2.6s-1.85 1.25-1.85 2.5V19h-3z', rule: 'evenodd' },
   email: { d: 'M3 4.5h18A1.5 1.5 0 0 1 22.5 6v12a1.5 1.5 0 0 1-1.5 1.5H3A1.5 1.5 0 0 1 1.5 18V6A1.5 1.5 0 0 1 3 4.5zM3.6 7.3 12 13.2l8.4-5.9-.85-1.25L12 11.4 4.45 6.05z', rule: 'evenodd' },
   phone: 'M6.6 10.8a15.1 15.1 0 0 0 6.6 6.6l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.58.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1C10.6 21 3 13.4 3 4c0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02z',

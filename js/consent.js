@@ -4,7 +4,8 @@
    - The default state (everything denied) and a stored choice are applied by the inline
      script of the <head>, before Google Tag Manager loads: this file only asks and saves.
    - The banner (#consent, markup and texts in en/ and fr/index.html) is a non-modal dialog,
-     shown while no choice is stored and from the footer button [data-consent-open].
+     shown while no choice is stored and from the footer button [data-consent-open]. On a
+     first visit, an inline script right after it opens it during parsing (first paint).
    - The choice is kept 6 months in localStorage ("consent"), then asked again.
    Exposes nothing. No dependency.
    ========================================================================== */
@@ -71,6 +72,7 @@
     try {
       localStorage.setItem(KEY, JSON.stringify({ version: VERSION, date: Date.now(), analytics: choice.analytics, ads: choice.ads }));
     } catch (e) { /* storage unavailable: the banner comes back on the next page */ }
+    document.documentElement.classList.remove('consent-pending');
     close();
   }
 

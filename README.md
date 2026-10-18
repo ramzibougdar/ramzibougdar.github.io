@@ -16,14 +16,16 @@ data/cv.js        CV content, in English and French (the file to edit)
 en/, fr/          Language pages
 js/               Rendering, translations, cookie banner, animations
 css/              Styles (screen, print, PDF)
-assets/           PDFs, images, icons
-scripts/          Maintenance script (pre-render, metadata, sitemap, llms.txt)
+assets/           PDFs, images, icons, self-hosted fonts
+scripts/          Maintenance scripts (minified bundles, pre-render, metadata, sitemap, llms.txt)
 ```
 
 ## Updating the CV
 
 1. Edit `data/cv.js` and set `meta.updatedOn`.
-2. Regenerate the pre-rendered HTML, metadata, `sitemap.xml` and `llms.txt` (needs Node and Chrome):
+2. Rebuild the minified bundles (`css/site.min.css`, `js/site.min.js`), the pre-rendered HTML,
+   metadata, `sitemap.xml` and `llms.txt` (needs Node, npx and Chrome). Do the same after editing
+   any CSS or JS source:
 
    ```bash
    node scripts/generate-metadata.js --write

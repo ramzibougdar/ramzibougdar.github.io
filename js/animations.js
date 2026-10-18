@@ -1,7 +1,9 @@
 /* ==========================================================================
    animations.js — CV Ramzi Bougdar
    The ONLY motion module (constitution, principle IX). The only file that uses GSAP.
-   - Inert if GSAP failed to load (blocked CDN, invalid SRI): nothing is hidden.
+   - GSAP is loaded here, once the page has loaded: the content and the opening entrance
+     (M1, in CSS: css/style.css) never wait for it. Inert if GSAP fails to load
+     (blocked CDN, invalid SRI): nothing is hidden.
    - All motion lives inside gsap.matchMedia(): under prefers-reduced-motion: reduce,
      GSAP reverts everything and the content returns to its final state.
    - Transform and opacity only. M1–M17 catalogue: specs/002-refonte-ui-ux/spec.md.
@@ -30,8 +32,14 @@
   /** ?final: immediate final state (screenshots, review). ?pdf: PDF generation. */
   var NO_MOTION = params.has('final') || /[?&]pdf\b/.test(window.location.search);
 
-  if (!window.gsap || !window.ScrollTrigger) return;
-  gsap.registerPlugin(ScrollTrigger);
+  /** Documents rather than visits (PDF, ATS, pre-render): GSAP is not loaded at all. */
+  if (/[?&](pdf|ats|prerender)\b/.test(window.location.search)) return;
+
+  /** GSAP 3.13.0 from cdnjs: pinned version and SRI hashes, loaded in this order. */
+  var GSAP_FILES = [
+    ['https://cdnjs.cloudflare.com/ajax/libs/gsap/3.13.0/gsap.min.js', 'sha512-NcZdtrT77bJr4STcmsGAESr06BYGE8woZdSdEgqnpyqac7sugNO+Tr4bGwGF3MsnEkGKhU2KL2xh6Ec+BqsaHA=='],
+    ['https://cdnjs.cloudflare.com/ajax/libs/gsap/3.13.0/ScrollTrigger.min.js', 'sha512-P2IDYZfqSwjcSjX0BKeNhwRUH8zRPGlgcWl5n6gBLzdi4Y5/0O4zaXrtO4K9TZK6Hn1BenYpKowuCavNandERg==']
+  ];
 
   /** Shared "reduced motion" query. */
   var calmQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
@@ -78,41 +86,6 @@
       scrollTrigger: { start: 0, end: 'max', scrub: true }
     });
     root.classList.add('progress-active');
-  }
-
-  /* --------------------------------------------------------------------------
-     M1, M2 — Bento entrance and counters
-     -------------------------------------------------------------------------- */
-
-  /**
-   * Plays the orchestrated entrance (the only moment not triggered by the user), ≤ 1.8 s.
-   * @returns {gsap.core.Timeline|null}
-   */
-  function initEntrance() {
-    var hero = document.querySelector('[data-anim="hero"]');
-    if (!hero) return null;
-    var tiles = all('[data-anim="tile"]');
-    var tl = gsap.timeline({ defaults: { ease: EASE.out } });
-
-    tl.from('.bar__inner', { opacity: 0, y: -12, duration: DURATIONS.slow }, 0)
-      .from(hero, { opacity: 0, y: 16, duration: DURATIONS.slow }, 0)
-      .from(all('[data-anim="halo"]'), { opacity: 0, scale: 0.5, duration: 1.2, stagger: 0.1 }, 0.1)
-      .from(all('[data-anim="name-letter"]'), { yPercent: 110, duration: DURATIONS.scene, stagger: 0.03, ease: EASE.expressive }, 0.15)
-      .from(all('[data-anim="hero-text"]'), { opacity: 0, y: 12, duration: 0.5, stagger: 0.08 }, 0.5)
-      .from(tiles, { opacity: 0, y: 16, duration: 0.5, stagger: gap(tiles.length) }, 0.45);
-
-    /* M2: counters from 0 to the computed value. Assistive technologies already read
-       the final value (visually hidden text next to it). */
-    all('[data-anim="counter"]').forEach(function (el) {
-      var target = el.querySelector('[aria-hidden="true"]') || el;
-      var value = Number(el.getAttribute('value')) || 0;
-      var state = { n: 0 };
-      tl.to(state, {
-        n: value, duration: 1.2, ease: 'power1.out',
-        onUpdate: function () { target.textContent = String(Math.round(state.n)); }
-      }, 0.6);
-    });
-    return tl;
   }
 
   /* --------------------------------------------------------------------------
@@ -335,8 +308,7 @@
     }, function (context) {
       if (!context.conditions.motion) return undefined;
       root.classList.add('anim-ready');
-      // ScrollTriggers created in page order (bento, timeline, reveals).
-      initEntrance();
+      // ScrollTriggers created in page order (timeline, reveals). The entrance (M1) is in CSS.
       initTimeline();
       initReveals();
       var cleanupPointer = context.conditions.pointer ? initPointer() : null;
@@ -352,6 +324,37 @@
     }
   }
 
-  if (root.classList.contains('cv-ready')) start();
-  else document.addEventListener('cv:ready', start, { once: true });
+  /**
+   * Loads the GSAP files one after the other, then calls done (never if one fails).
+   * @param {Function} done
+   */
+  function loadGsap(done) {
+    var next = function (i) {
+      if (i === GSAP_FILES.length) { done(); return; }
+      var script = document.createElement('script');
+      script.src = GSAP_FILES[i][0];
+      script.integrity = GSAP_FILES[i][1];
+      script.crossOrigin = 'anonymous';
+      script.referrerPolicy = 'no-referrer';
+      script.onload = function () { next(i + 1); };
+      document.head.appendChild(script);
+    };
+    next(0);
+  }
+
+  /** Starts once GSAP is there and main.js has rendered the CV. */
+  function run() {
+    if (!window.gsap || !window.ScrollTrigger) return;
+    gsap.registerPlugin(ScrollTrigger);
+    if (root.classList.contains('cv-ready')) start();
+    else document.addEventListener('cv:ready', start, { once: true });
+  }
+
+  // After the load event, when the browser is idle: GSAP never delays the first display.
+  var later = function () {
+    if (window.requestIdleCallback) window.requestIdleCallback(function () { loadGsap(run); }, { timeout: 2000 });
+    else window.setTimeout(function () { loadGsap(run); }, 200);
+  };
+  if (document.readyState === 'complete') later();
+  else window.addEventListener('load', later, { once: true });
 })();

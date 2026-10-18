@@ -63,7 +63,7 @@ window.CV_DATA = {
       }
     ],
     "photo": {
-      "src": "assets/img/ramzi-bougdar.jpg",
+      "src": "assets/img/ramzi-bougdar.webp",
       "alt": { "en": "Portrait of Ramzi Bougdar", "fr": "Portrait de Ramzi Bougdar" },
       "width": 400,
       "height": 400

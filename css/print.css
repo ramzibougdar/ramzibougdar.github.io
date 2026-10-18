@@ -127,7 +127,6 @@ main {
   overflow: visible;
 }
 
-.name__word + .name__word::before { content: " "; }
 
 .hero__location {
   padding: 0;

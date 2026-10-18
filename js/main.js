@@ -310,13 +310,18 @@ function period(start, end) {
  * @param {Object} profile
  */
 function renderHero(profile) {
+  // The name is written once, letter by letter for the entrance, with a real space between the
+  // words: its text reads "Ramzi Bougdar" for robots. Assistive technologies read the h1 label.
   var rank = 0;   // --i: stagger of the entrance (css/style.css)
-  var visual = create('span', { 'aria-hidden': 'true' }, String(profile.name).split(/\s+/).map(function (word) {
-    return create('span', { className: 'name__word' }, word.split('').map(function (letter) {
+  var words = [];
+  String(profile.name).split(/\s+/).forEach(function (word, w) {
+    if (w) words.push(' ');
+    words.push(create('span', { className: 'name__word' }, word.split('').map(function (letter) {
       return create('span', { className: 'name__letter', 'data-anim': 'name-letter', style: '--i:' + rank++ }, letter);
-    }));
-  }));
-  fill('name', [create('span', { className: 'visually-hidden' }, profile.name), visual], true);
+    })));
+  });
+  var heading = fill('name', create('span', { 'aria-hidden': 'true' }, words), true);
+  if (heading) heading.setAttribute('aria-label', profile.name);
   fill('title', text(profile.title), true);
   fill('location', text(profile.location, 'location'), true);
 

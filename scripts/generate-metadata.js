@@ -232,7 +232,7 @@ function headBlock(data, lang, html) {
     '<link rel="canonical" href="' + site + lang + '/">',
     '<link rel="alternate" hreflang="en" href="' + site + 'en/">',
     '<link rel="alternate" hreflang="fr" href="' + site + 'fr/">',
-    '<link rel="alternate" hreflang="x-default" href="' + site + '">',
+    '<link rel="alternate" hreflang="x-default" href="' + site + 'en/">',
     '<meta property="og:type" content="profile">',
     '<meta property="og:site_name" content="' + attr(cv.profile.name) + '">',
     '<meta property="og:title" content="' + attr(title) + '">',
@@ -254,18 +254,15 @@ function headBlock(data, lang, html) {
 }
 
 /**
- * Language alternates of the root page (it only routes visitors to a language).
+ * Canonical link of the root page (it only routes visitors to a language).
  * @param {Object} data
  * @returns {string}
  */
 function rootHeadBlock(data) {
   var site = siteUrl(data);
-  return HEAD_START + [
-    '<link rel="canonical" href="' + site + '">',
-    '<link rel="alternate" hreflang="en" href="' + site + 'en/">',
-    '<link rel="alternate" hreflang="fr" href="' + site + 'fr/">',
-    '<link rel="alternate" hreflang="x-default" href="' + site + '">'
-  ].map(function (l) { return '  ' + l + '\n'; }).join('') + HEAD_END;
+  // Not indexed on its own: search engines see the English page it sends them to (x-default),
+  // and show /fr/ or /en/ according to the searcher's language (hreflang of those pages).
+  return HEAD_START + '  <link rel="canonical" href="' + site + 'en/">\n' + HEAD_END;
 }
 
 /**
@@ -372,7 +369,7 @@ function sitemap(data) {
   var updated = data.meta && data.meta.updatedOn;
   var alternates = LANGUAGES.map(function (l) {
     return '    <xhtml:link rel="alternate" hreflang="' + l + '" href="' + site + l + '/"/>';
-  }).concat('    <xhtml:link rel="alternate" hreflang="x-default" href="' + site + '"/>').join('\n');
+  }).concat('    <xhtml:link rel="alternate" hreflang="x-default" href="' + site + 'en/"/>').join('\n');
   return '<?xml version="1.0" encoding="UTF-8"?>\n' +
     '<!-- Generated from data/cv.js by scripts/generate-metadata.js -->\n' +
     '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">\n' +

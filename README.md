@@ -109,7 +109,7 @@ retirer au contenu.
 | `meta` | `siteUrl` (adresse publique du site, pour les URL absolues), `updatedOn`, `source`, `shareImage?` (image des aperçus de partage LinkedIn, X…, idéalement 1200 × 630 : `src`, `alt`, `width`, `height` ; à défaut, la photo du profil) |
 | `profile` | `name` (obligatoire), `title`, `location`, `summary` (texte ou liste de paragraphes), `pdfSummary?` (version courte de « Qui suis-je », utilisée seulement dans les PDF), `strengths[]`, `photo` |
 | `strengths[]` | tuiles « points forts » : `label`, puis `title`, `steps[]` ou `logo`, `detail?`, `color` (`gradient`, `active`, `warm` ou `accent`) |
-| `contact` | `email`, `phone`, `linkedin`, `github`, `instagram`, `tiktok` (URL en `https://`) |
+| `contact` | `email`, `phone`, `linkedin`, `github`, `instagram`, `tiktok` (URL en `https://`), `linkParams?` (paramètres de suivi ajoutés aux liens des réseaux sur le site, ex. `utm_source=website`, ni dans le PDF ni dans les données structurées) |
 | `experiences[]` | `employer`, `location?`, `positions[]` |
 | `positions[]` | `title`, `type` (`employee`, `mission` ou `internship`), `start` (`AAAA-MM`), `end` (`AAAA-MM` ou `null` = « aujourd'hui »), `location?`, `description?`, `via?` (employeur pour le compte duquel une mission a été réalisée, affiché « Mission pour … »), `highlights[]?` (réalisations chiffrées, affichées en « Résultats clés »), `missions[]` |
 | `education[]` | `school`, `degree`, `field`, `start`, `end` (`AAAA`) |

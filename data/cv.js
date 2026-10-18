@@ -75,7 +75,8 @@ window.CV_DATA = {
     "linkedin": "https://www.linkedin.com/in/ramzibougdar",
     "github": "https://github.com/ramzibougdar",
     "instagram": "https://www.instagram.com/ramzibougdar/",
-    "tiktok": "https://www.tiktok.com/@ramzibougdar"
+    "tiktok": "https://www.tiktok.com/@ramzibougdar",
+    "linkParams": "utm_source=website&utm_campaign=github"
   },
   "experiences": [
     {

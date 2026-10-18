@@ -106,7 +106,7 @@ retirer au contenu.
 
 | Bloc | Contenu |
 |------|---------|
-| `meta` | `siteUrl` (adresse publique du site, pour les URL absolues), `updatedOn`, `source` |
+| `meta` | `siteUrl` (adresse publique du site, pour les URL absolues), `updatedOn`, `source`, `shareImage?` (image des aperçus de partage LinkedIn, X…, idéalement 1200 × 630 : `src`, `alt`, `width`, `height` ; à défaut, la photo du profil) |
 | `profile` | `name` (obligatoire), `title`, `location`, `summary` (texte ou liste de paragraphes), `pdfSummary?` (version courte de « Qui suis-je », utilisée seulement dans les PDF), `strengths[]`, `photo` |
 | `strengths[]` | tuiles « points forts » : `label`, puis `title`, `steps[]` ou `logo`, `detail?`, `color` (`gradient`, `active`, `warm` ou `accent`) |
 | `contact` | `email`, `phone`, `linkedin`, `github`, `instagram`, `tiktok` (URL en `https://`) |

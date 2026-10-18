@@ -225,7 +225,8 @@ function headBlock(data, lang, html) {
   var other = lang === 'en' ? 'fr' : 'en';
   var title = decode((/<title>([^<]*)<\/title>/.exec(html) || [])[1] || '');
   var description = decode((/<meta name="description" content="([^"]*)">/.exec(html) || [])[1] || '');
-  var photo = cv.profile && cv.profile.photo;
+  // Social card image: meta.shareImage (wide, 1200 × 630), otherwise the profile photo
+  var image = (cv.meta && cv.meta.shareImage) || (cv.profile && cv.profile.photo);
   var lines = [
     '<link rel="canonical" href="' + site + lang + '/">',
     '<link rel="alternate" hreflang="en" href="' + site + 'en/">',
@@ -239,13 +240,15 @@ function headBlock(data, lang, html) {
     '<meta property="og:locale" content="' + L.ogLocale + '">',
     '<meta property="og:locale:alternate" content="' + LABELS[other].ogLocale + '">'
   ];
-  if (photo && photo.src) {
-    lines.push('<meta property="og:image" content="' + site + photo.src + '">');
-    if (photo.width) lines.push('<meta property="og:image:width" content="' + photo.width + '">');
-    if (photo.height) lines.push('<meta property="og:image:height" content="' + photo.height + '">');
-    if (typeof photo.alt === 'string') lines.push('<meta property="og:image:alt" content="' + attr(photo.alt) + '">');
+  if (image && image.src) {
+    lines.push('<meta property="og:image" content="' + site + image.src + '">');
+    if (image.width) lines.push('<meta property="og:image:width" content="' + image.width + '">');
+    if (image.height) lines.push('<meta property="og:image:height" content="' + image.height + '">');
+    if (typeof image.alt === 'string') lines.push('<meta property="og:image:alt" content="' + attr(image.alt) + '">');
   }
-  lines.push('<meta name="twitter:card" content="summary">');
+  // A wide image gets the large card, a square photo the small one.
+  var wide = image && image.width && image.height && image.width > image.height;
+  lines.push('<meta name="twitter:card" content="' + (wide ? 'summary_large_image' : 'summary') + '">');
   return HEAD_START + lines.map(function (l) { return '  ' + l + '\n'; }).join('') + HEAD_END;
 }
 
@@ -278,6 +281,20 @@ function withHead(html, block) {
 }
 
 /**
+ * Turns a day (AAAA-MM-JJ) into a full date and time at midnight, Paris time, with its offset
+ * (e.g. 2026-10-17T00:00:00+02:00): Google expects a DateTime for ProfilePage.dateModified.
+ * @param {string} day
+ * @returns {?string}
+ */
+function dateTime(day) {
+  if (typeof day !== 'string' || !/^\d{4}-\d{2}-\d{2}$/.test(day)) return day || null;
+  var zone = new Intl.DateTimeFormat('en-US', { timeZone: 'Europe/Paris', timeZoneName: 'longOffset' })
+    .formatToParts(new Date(day + 'T12:00:00Z'))
+    .filter(function (part) { return part.type === 'timeZoneName'; })[0].value;   // "GMT+02:00"
+  return day + 'T00:00:00' + (zone.replace('GMT', '') || '+00:00');
+}
+
+/**
  * Builds the JSON-LD object of one language page.
  * @param {Object} data bilingual CV data
  * @param {string} lang
@@ -298,7 +315,7 @@ function structuredData(data, lang) {
     '@id': site + lang + '/',
     url: site + lang + '/',
     inLanguage: lang,
-    dateModified: cv.meta && cv.meta.updatedOn,
+    dateModified: dateTime(cv.meta && cv.meta.updatedOn),
     mainEntity: clean({
       '@type': 'Person',
       '@id': site + '#person',

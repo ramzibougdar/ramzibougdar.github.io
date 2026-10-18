@@ -176,10 +176,6 @@
   --bar-height: 4.5rem;
   --max-width: 80rem;
 }
-/* Screen: every tile has the inner spacing of the hero (print and PDF keep the tighter value above) */
-@media screen {
-  :root { --s-tile: clamp(1.5rem, 1rem + 2vw, 2.5rem); }
-}
 
 /* --------------------------------------------------------------------------
    6. Motion (mirrors DURATIONS / EASE in js/animations.js)

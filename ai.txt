@@ -1,0 +1,11 @@
+# ai.txt (also at /.well-known/ai.txt) — CV Ramzi Bougdar (https://ramzibougdar.github.io/)
+#
+# EN: AI systems may read and use the whole CV, like robots.txt allows for
+#     search engines and AI crawlers. A summary for AI assistants is in
+#     /llms.txt (English) and /fr/llms.txt (French).
+# FR : Les systèmes d'IA peuvent lire et utiliser tout le CV, comme robots.txt
+#      l'autorise aux moteurs de recherche et aux robots d'IA. Un résumé pour
+#      les assistants IA est dans /llms.txt (anglais) et /fr/llms.txt (français).
+
+User-Agent: *
+Allow: /

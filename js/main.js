@@ -145,14 +145,66 @@ function logoSvg(key, className) {
  * Fills the [data-render="name"] container with the given nodes.
  * @param {string} name
  * @param {Array|Node|string} content
+ * @param {boolean} [keepSame] static markup (no event listener): kept if identical to the pre-render
  * @returns {HTMLElement|null}
  */
-function fill(name, content) {
+function fill(name, content, keepSame) {
   var target = document.querySelector('[data-render="' + name + '"]');
   if (!target) return null;
+  // Static markup identical to the pre-render: kept as is, so the browser does not paint it
+  // a second time (which would push back the Largest Contentful Paint).
+  if (keepSame && !PRERENDER_MODE) {
+    var probe = target.cloneNode(false);
+    append(probe, content);
+    if (probe.innerHTML === target.innerHTML.replace(/<!--[\s\S]*?-->/g, '')) return target;
+  }
+  // During the CSS entrance, the new elements carry on the animations where the pre-rendered ones were.
+  var times = animationTimes(target);
   target.textContent = '';
   append(target, content);
+  if (times.length) setAnimationTimes(target, times);
   return target;
+}
+
+/**
+ * Progress of the entrance animations of the [data-anim] elements of a container.
+ * @param {Element} target
+ * @returns {Array<Array<?number>>} current times, element by element (empty outside the entrance)
+ */
+function animationTimes(target) {
+  if (!document.documentElement.classList.contains('entrance') || !target.getAnimations) return [];
+  return Array.prototype.map.call(target.querySelectorAll('[data-anim]'), function (el) {
+    return el.getAnimations().map(function (a) { return a.currentTime; });
+  });
+}
+
+/**
+ * Applies progress saved by animationTimes() to the new elements, in the same order.
+ * @param {Element} target
+ * @param {Array<Array<?number>>} times
+ */
+function setAnimationTimes(target, times) {
+  Array.prototype.forEach.call(target.querySelectorAll('[data-anim]'), function (el, i) {
+    (times[i] ? el.getAnimations() : []).forEach(function (a, j) {
+      if (times[i][j] !== null && times[i][j] !== undefined) a.currentTime = times[i][j];
+    });
+  });
+}
+
+/**
+ * Removes the "entrance" class once the entrance animations have ended (css/style.css, M1):
+ * blocks rendered later do not replay them, and GSAP is free to move the same elements.
+ */
+function endEntrance() {
+  var root = document.documentElement;
+  if (!root.classList.contains('entrance')) return;
+  var done = function () { root.classList.remove('entrance'); };
+  if (!document.getAnimations) { window.setTimeout(done, 2500); return; }
+  Promise.all(document.getAnimations().filter(function (a) {
+    return /^entrance-/.test(a.animationName || '');
+  }).map(function (a) {
+    return a.finished.catch(function () {});
+  })).then(done);
 }
 
 /**
@@ -258,14 +310,15 @@ function period(start, end) {
  * @param {Object} profile
  */
 function renderHero(profile) {
+  var rank = 0;   // --i: stagger of the entrance (css/style.css)
   var visual = create('span', { 'aria-hidden': 'true' }, String(profile.name).split(/\s+/).map(function (word) {
     return create('span', { className: 'name__word' }, word.split('').map(function (letter) {
-      return create('span', { className: 'name__letter', 'data-anim': 'name-letter' }, letter);
+      return create('span', { className: 'name__letter', 'data-anim': 'name-letter', style: '--i:' + rank++ }, letter);
     }));
   }));
-  fill('name', [create('span', { className: 'visually-hidden' }, profile.name), visual]);
-  fill('title', text(profile.title));
-  fill('location', text(profile.location, 'location'));
+  fill('name', [create('span', { className: 'visually-hidden' }, profile.name), visual], true);
+  fill('title', text(profile.title), true);
+  fill('location', text(profile.location, 'location'), true);
 
   // The photo is rendered only when a path is given (otherwise no empty element).
   // It sits in the first screen: high-priority loading, never deferred.
@@ -273,7 +326,7 @@ function renderHero(profile) {
   fill('photo', photo && photo.src ? create('img', {
     src: window.CV_I18N.asset(photo.src), alt: photo.alt || T.portraitOf + profile.name,
     width: photo.width || 256, height: photo.height || 256, decoding: 'async', fetchpriority: 'high'
-  }) : null);
+  }) : null, true);
 }
 
 /**
@@ -283,10 +336,10 @@ function renderHero(profile) {
  */
 function renderStats(cv) {
   var calc = window.CV_CALC;
-  var tiles = calc.keyFigures(cv).map(function (f) {
+  var tiles = calc.keyFigures(cv).map(function (f, i) {
     var ticks = create('span', { className: 'stat__ticks', 'aria-hidden': 'true' },
       Array.apply(null, Array(Math.min(f.value, 20))).map(function () { return create('i'); }));
-    return create('p', { className: 'tile stat stat--accent stat--wide', 'data-anim': 'tile', 'data-anim-tilt': '4' }, [
+    return create('p', { className: 'tile stat stat--accent stat--wide', 'data-anim': 'tile', 'data-anim-tilt': '4', style: '--i:' + i }, [
       create('data', { className: 'stat__value', value: f.value, 'data-anim': 'counter' }, [
         create('span', { 'aria-hidden': 'true' }, String(f.value)),
         create('span', { className: 'visually-hidden' }, String(f.value))
@@ -314,7 +367,7 @@ function renderStats(cv) {
     var logo = s.logo ? logoSvg(s.logo, 'strength__logo') : null;
     if (logo) content.push(logo);
     if (s.detail) content.push(create('p', { className: 'strength__detail' }, text(s.detail)));
-    tiles.push(create('div', { className: 'tile stat strength ' + (colors[s.color] || ''), 'data-anim': 'tile', 'data-anim-tilt': '4' }, content));
+    tiles.push(create('div', { className: 'tile stat strength ' + (colors[s.color] || ''), 'data-anim': 'tile', 'data-anim-tilt': '4', style: '--i:' + tiles.length }, content));
   });
   fill('stats', tiles);
 }
@@ -331,7 +384,7 @@ function renderAbout(summary, title) {
   });
   fill('about', paragraphs.length ? paragraphs.map(function (p) {
     return create('p', { className: 'about__text' }, text(p, 'summary'));
-  }) : create('p', null, clarifyMarker(T.noSummary, 'summary')));
+  }) : create('p', null, clarifyMarker(T.noSummary, 'summary')), true);
 }
 
 /**
@@ -1077,6 +1130,7 @@ function start() {
   }).then(function () {
     document.documentElement.classList.add('cv-ready');
     document.dispatchEvent(new Event('cv:ready'));
+    endEntrance();
   });
 }
 

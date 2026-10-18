@@ -47,15 +47,34 @@
       if (c && c.version === 1 && Date.now() - c.date < 182 * 24 * 3600 * 1000) {
         var ads = c.ads ? 'granted' : 'denied';
         gtag('consent', 'update', { analytics_storage: c.analytics ? 'granted' : 'denied', ad_storage: ads, ad_user_data: ads, ad_personalization: ads });
+      } else if (!/[?&](pdf|ats|prerender)\b/.test(window.location.search)) {
+        // No choice yet: the banner opens as soon as it is parsed (script right after it).
+        document.documentElement.classList.add('consent-pending');
       }
     })();
   </script>
-  <!-- Google Tag Manager -->
-  <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
-  new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
-  j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
-  'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
-  })(window,document,'script','dataLayer','GTM-W86L38PQ');</script>
+  <!--
+    Google Tag Manager, loaded at the first interaction (pointer, key, scroll) or 3.5 s after
+    the page load event: tags never slow down the first display. Consent above still applies.
+  -->
+  <script>
+    (function (w, d) {
+      var events = ['pointerdown', 'keydown', 'scroll', 'touchstart'];
+      var done = false;
+      function load() {
+        if (done) return;
+        done = true;
+        events.forEach(function (e) { w.removeEventListener(e, load, true); });
+        w.dataLayer.push({ 'gtm.start': new Date().getTime(), event: 'gtm.js' });
+        var script = d.createElement('script');
+        script.async = true;
+        script.src = 'https://www.googletagmanager.com/gtm.js?id=GTM-W86L38PQ';
+        d.head.appendChild(script);
+      }
+      events.forEach(function (e) { w.addEventListener(e, load, { capture: true, passive: true }); });
+      w.addEventListener('load', function () { w.setTimeout(load, 3500); });
+    })(window, document);
+  </script>
   <!-- End Google Tag Manager -->
   <!--
     Language router: sends the visitor to the stored language, otherwise to French when the

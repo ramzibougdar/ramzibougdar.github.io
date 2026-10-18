@@ -6,7 +6,8 @@
      real js/main.js in headless Chrome, ?prerender mode), so every robot reads the whole CV;
    - the <head> links and social cards (canonical, hreflang, Open Graph) of each page;
    - the schema.org JSON-LD (ProfilePage about a Person) of each page;
-   - sitemap.xml, and the llms.txt files: /llms.txt (English) and /fr/llms.txt (French).
+   - sitemap.xml, and the llms.txt files: /llms.txt (English) and /fr/llms.txt (French);
+   - first, the minified CSS and JS bundles (scripts/build-assets.js).
    Usage:
    - node scripts/generate-metadata.js           checks every file, exits with 1 on any gap
    - node scripts/generate-metadata.js --write   rewrites every file
@@ -470,6 +471,8 @@ function llmsTxt(data, lang) {
 /** Checks (or rewrites with --write) every generated file. */
 function main() {
   var write = process.argv.indexOf('--write') !== -1;
+  // Minified CSS and JS first: the pre-render runs the pages, which load them.
+  var gaps = require('./build-assets').build(write);
   var data = loadCV();
   var targets = [];
 
@@ -487,7 +490,6 @@ function main() {
   targets.push({ file: path.join(ROOT, 'llms.txt'), expected: llmsTxt(data, 'en') });
   targets.push({ file: path.join(ROOT, 'fr', 'llms.txt'), expected: llmsTxt(data, 'fr') });
 
-  var gaps = 0;
   targets.forEach(function (t) {
     var name = path.relative(ROOT, t.file);
     var current = fs.existsSync(t.file) ? fs.readFileSync(t.file, 'utf8') : null;

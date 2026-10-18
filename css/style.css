@@ -51,11 +51,22 @@ a { color: inherit; text-underline-offset: .2em; }
 img { max-width: 100%; height: auto; }
 [hidden]:not([hidden="until-found"]) { display: none !important; }
 
-/* Until the CV is rendered, content is hidden (while keeping its space): no
-   layout shift when it fills in. The cv-ready class is set by main.js
-   (or, as a fallback, by the <head> script after 3 s). */
-.js:not(.cv-ready) main,
-.js:not(.cv-ready) .footer { visibility: hidden; }
+/* M1 — Opening entrance, in CSS: it starts with the first paint, without waiting for any
+   script (the CV is pre-rendered in the HTML). The "entrance" class is set by the <head>
+   script (motion allowed only) and removed by main.js once the entrance has ended, so
+   content rendered again later does not replay it. --i: rank in a stagger. */
+@keyframes entrance-rise { from { opacity: 0; transform: translateY(var(--rise, 16px)); } }
+/* The hero only slides, without fading: its text (the largest one on screen) counts as painted
+   from the first frame (Largest Contentful Paint). */
+@keyframes entrance-slide { from { transform: translateY(var(--rise, 16px)); } }
+@keyframes entrance-letter { from { transform: translateY(110%); } }
+@keyframes entrance-halo { from { opacity: 0; transform: scale(.5); } }
+.entrance .bar__inner { --rise: -12px; animation: entrance-rise var(--d-slow) var(--ease-out) both; }
+.entrance [data-anim="hero"] { animation: entrance-slide var(--d-slow) var(--ease-out) both; }
+.entrance [data-anim="halo"] { animation: entrance-halo 1.2s var(--ease-out) calc(.1s + var(--i, 0) * .1s) both; }
+.entrance [data-anim="name-letter"] { animation: entrance-letter var(--d-scene) var(--ease-expressive) calc(.15s + var(--i, 0) * .03s) both; }
+.entrance [data-anim="hero-text"] { --rise: 12px; animation: entrance-slide .5s var(--ease-out) calc(.5s + var(--i, 0) * .08s) both; }
+.entrance [data-anim="tile"] { animation: entrance-rise .5s var(--ease-out) calc(.45s + var(--i, 0) * .06s) both; }
 
 /* Visible, thick focus ring shown instantly (M15) */
 :focus-visible { outline: 3px solid var(--c-focus); outline-offset: 3px; border-radius: .4rem; }
@@ -419,7 +430,8 @@ main { max-width: var(--max-width); margin: 0 auto; padding: var(--s-gutter) var
 
 .footer {
   display: flex; flex-wrap: wrap; justify-content: space-between; gap: 1rem;
-  max-width: var(--max-width); margin: 0 auto; padding: var(--s-5) var(--s-gutter) 2.5rem;
+  /* Bottom: room for the fixed back-to-top button, which would cover the last link */
+  max-width: var(--max-width); margin: 0 auto; padding: var(--s-5) var(--s-gutter) 5.5rem;
   color: var(--c-text-2); font-size: var(--t-small);
 }
 .footer__links { display: flex; flex-wrap: wrap; gap: .25rem 1.25rem; margin: 0; padding: 0; list-style: none; }

@@ -222,6 +222,28 @@ function withPrerender(html, parts) {
 function headBlock(data, lang, html) {
   var site = siteUrl(data);
   var cv = localize(data, lang);
+  var lines = [
+    '<link rel="canonical" href="' + site + lang + '/">',
+    '<link rel="alternate" hreflang="en" href="' + site + 'en/">',
+    '<link rel="alternate" hreflang="fr" href="' + site + 'fr/">',
+    '<link rel="alternate" hreflang="x-default" href="' + site + 'en/">',
+    // Large image previews and full snippets allowed in search results (Google, Bing)
+    '<meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1">'
+  ].concat(socialLines(data, lang, html));
+  return HEAD_START + lines.map(function (l) { return '  ' + l + '\n'; }).join('') + HEAD_END;
+}
+
+/**
+ * Author and social cards (Open Graph, X/Twitter) of one language page, from its title and
+ * description. No phone number auto-linking: the number is only shown on request.
+ * @param {Object} data
+ * @param {string} lang
+ * @param {string} html page source (title and description)
+ * @returns {string[]}
+ */
+function socialLines(data, lang, html) {
+  var site = siteUrl(data);
+  var cv = localize(data, lang);
   var L = LABELS[lang];
   var other = lang === 'en' ? 'fr' : 'en';
   var title = decode((/<title>([^<]*)<\/title>/.exec(html) || [])[1] || '');
@@ -229,10 +251,8 @@ function headBlock(data, lang, html) {
   // Social card image: meta.shareImage (wide, 1200 × 630), otherwise the profile photo
   var image = (cv.meta && cv.meta.shareImage) || (cv.profile && cv.profile.photo);
   var lines = [
-    '<link rel="canonical" href="' + site + lang + '/">',
-    '<link rel="alternate" hreflang="en" href="' + site + 'en/">',
-    '<link rel="alternate" hreflang="fr" href="' + site + 'fr/">',
-    '<link rel="alternate" hreflang="x-default" href="' + site + 'en/">',
+    '<meta name="author" content="' + attr(cv.profile.name) + '">',
+    '<meta name="format-detection" content="telephone=no">',
     '<meta property="og:type" content="profile">',
     '<meta property="og:site_name" content="' + attr(cv.profile.name) + '">',
     '<meta property="og:title" content="' + attr(title) + '">',
@@ -250,19 +270,28 @@ function headBlock(data, lang, html) {
   // A wide image gets the large card, a square photo the small one.
   var wide = image && image.width && image.height && image.width > image.height;
   lines.push('<meta name="twitter:card" content="' + (wide ? 'summary_large_image' : 'summary') + '">');
-  return HEAD_START + lines.map(function (l) { return '  ' + l + '\n'; }).join('') + HEAD_END;
+  lines.push('<meta name="twitter:title" content="' + attr(title) + '">');
+  lines.push('<meta name="twitter:description" content="' + attr(description) + '">');
+  if (image && image.src) {
+    lines.push('<meta name="twitter:image" content="' + site + image.src + '">');
+    if (typeof image.alt === 'string') lines.push('<meta name="twitter:image:alt" content="' + attr(image.alt) + '">');
+  }
+  return lines;
 }
 
 /**
- * Canonical link of the root page (it only routes visitors to a language).
+ * Canonical link and social cards of the root page (it only routes visitors to a language).
  * @param {Object} data
+ * @param {string} enHtml source of the English page (title and description of its card)
  * @returns {string}
  */
-function rootHeadBlock(data) {
+function rootHeadBlock(data, enHtml) {
   var site = siteUrl(data);
   // Not indexed on its own: search engines see the English page it sends them to (x-default),
   // and show /fr/ or /en/ according to the searcher's language (hreflang of those pages).
-  return HEAD_START + '  <link rel="canonical" href="' + site + 'en/">\n' + HEAD_END;
+  // A link to the root shared on a network shows the card of the English page.
+  var lines = ['<link rel="canonical" href="' + site + 'en/">'].concat(socialLines(data, 'en', enHtml));
+  return HEAD_START + lines.map(function (l) { return '  ' + l + '\n'; }).join('') + HEAD_END;
 }
 
 /**
@@ -482,7 +511,8 @@ function main() {
     targets.push({ file: page, expected: expected });
   });
   var rootPage = path.join(ROOT, 'index.html');
-  targets.push({ file: rootPage, expected: withHead(fs.readFileSync(rootPage, 'utf8'), rootHeadBlock(data)) });
+  // The root shows the social card of the English page (targets[0], as regenerated above)
+  targets.push({ file: rootPage, expected: withHead(fs.readFileSync(rootPage, 'utf8'), rootHeadBlock(data, targets[0].expected)) });
   targets.push({ file: path.join(ROOT, 'sitemap.xml'), expected: sitemap(data) });
   targets.push({ file: path.join(ROOT, 'llms.txt'), expected: llmsTxt(data, 'en') });
   targets.push({ file: path.join(ROOT, 'fr', 'llms.txt'), expected: llmsTxt(data, 'fr') });

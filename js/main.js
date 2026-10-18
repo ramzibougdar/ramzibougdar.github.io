@@ -595,6 +595,8 @@ function renderContact(contact) {
     if (!url) return;
     // Short display: the profile handle (the label already names the network).
     var segments = typeof url === 'string' ? url.replace(/[?#].*$/, '').split('/').filter(Boolean) : [];
+    // Tracking parameters (contact.linkParams) on the site links only, not in the PDF.
+    if (contact.linkParams && !PDF_MODE && isSafeLink(url)) url += (url.indexOf('?') === -1 ? '?' : '&') + contact.linkParams;
     var handle = segments.length > 2 ? segments[segments.length - 1].replace(/^@/, '') : null;
     var short = handle ? (network[3] ? '@' : '') + handle : url;
     rows.push(contactRow(network[0], url, function (c) {

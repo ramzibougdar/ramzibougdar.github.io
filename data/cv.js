@@ -10,7 +10,8 @@ window.CV_DATA = {
   "meta": {
     "siteUrl": "https://ramzibougdar.github.io/",
     "updatedOn": "2026-10-17",
-    "source": "Export LinkedIn"
+    "source": "Export LinkedIn",
+    "shareImage": { "src": "assets/img/og-image.png", "alt": "Ramzi Bougdar", "width": 1200, "height": 630 }
   },
   "profile": {
     "name": "Ramzi Bougdar",
@@ -74,7 +75,8 @@ window.CV_DATA = {
     "linkedin": "https://www.linkedin.com/in/ramzibougdar",
     "github": "https://github.com/ramzibougdar",
     "instagram": "https://www.instagram.com/ramzibougdar/",
-    "tiktok": "https://www.tiktok.com/@ramzibougdar"
+    "tiktok": "https://www.tiktok.com/@ramzibougdar",
+    "linkParams": "utm_source=website&utm_campaign=github"
   },
   "experiences": [
     {
